@@ -6,14 +6,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Expense Manager</title>
     <link rel="stylesheet" href="style.css" />
-    <style>
-      .box {
-        padding: 8px 40px;
-      }
-      .form-control {
-        margin: 10px 0 25px;
-      }
-    </style>
     <script
       src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.27.2/axios.min.js"
       integrity="sha512-odNmoc1XJy5x1TMVMdC7EMs3IVdItLPlCeL5vSUPN2llYKMJ2eByTTAIiiuqLg+GdNr9hF6z81p27DArRFKT7A=="
@@ -31,13 +23,9 @@
     </section>
     <section class="right">
       <div class="box">
-        <h1>Please Signup</h1>
+        <h1>Please Login</h1>
         <div class="msg"></div>
         <form>
-          <div class="form-control">
-            <label for="name">Name</label>
-            <input id="name" type="text" name="name" required />
-          </div>
           <div class="form-control">
             <label for="email">Email</label>
             <input id="email" type="email" name="email" required />
@@ -46,11 +34,11 @@
             <label for="password">Password</label>
             <input id="password" type="password" name="password" required />
           </div>
-          <button class="btn" type="submit">Signup</button>
+          <button class="btn" type="submit">Login</button>
         </form>
-        <p class="text">Or have an account? <a href="#">Login</a></p>
+        <p class="text">Don't have an account? <a href="#">Signup</a></p>
       </div>
     </section>
-    <script src="signup.js"></script>
+    <script src="login.js"></script>
   </body>
 </html>
