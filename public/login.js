@@ -20,7 +20,7 @@ form.addEventListener("submit", (e) => {
     })
     .then((response) => {
       if (response.status == 200) {
-        console.log("ok");
+        notify(response.data);
       } else {
         throw { response: response };
       }

@@ -43,16 +43,19 @@ exports.login = (req, res, next) => {
   User.findAll({ where: { email: email } })
     .then((users) => {
       if (users.length === 0) {
-        throw { type: "error", message: "User Does Not Exists!" };
+        throw { type: "error", message: "User Not Found!" };
       } else return users;
     })
-    .then(([user]) => {
-      if (user.password === password) {
-        return res.status(200).send();
+    .then((users) => {
+      console.log(users[0]);
+      if (users[0].password === password) {
+        return res
+          .status(200)
+          .send({ type: "success", message: "User Login Successful" });
       } else {
         return res
-          .status(403)
-          .send({ type: "error", message: "Wrong Password!" });
+          .status(401)
+          .send({ type: "error", message: "User Not Authorized!" });
       }
     })
     .catch((err) => {
