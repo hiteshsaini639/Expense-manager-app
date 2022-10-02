@@ -19,17 +19,14 @@ form.addEventListener("submit", (e) => {
       password: e.target.password.value,
     })
     .then((response) => {
-      if (response.status == 200) {
+      if (response.status === 200) {
         notify(response.data);
       } else {
         throw { response: response };
       }
     })
     .catch((err) => {
-      if (err.response.data.type === "error") notify(err.response.data);
-      else {
-        notify(err.response.data);
-        console.log(err.response);
-      }
+      notify(err.response.data);
+      console.log(err);
     });
 });
