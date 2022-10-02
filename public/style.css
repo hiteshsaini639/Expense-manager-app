@@ -1,4 +1,6 @@
 @import url("https://fonts.googleapis.com/css2?family=Muli&family=Fredoka+One&family=Roboto&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Baloo+Da+2:wght@400;500;600;700;800&display=swap");
+/* font-family: 'Baloo Da 2', cursive; */
 
 * {
   box-sizing: border-box;
@@ -25,10 +27,9 @@ body {
   width: 50vw;
   height: 100vh;
   position: relative;
-  font-family: "Poppins", sans-serif;
+  font-family: "Baloo Da 2", cursive;
+  /* font-family: "Roboto", sans-serif; */
   color: white;
-  letter-spacing: 0.25rem;
-  font-family: "Roboto", sans-serif;
   z-index: -2;
 }
 
@@ -44,14 +45,16 @@ body {
 }
 
 .heading h1 {
-  font-size: 3rem;
+  font-size: 3.5rem;
   white-space: nowrap;
-  margin: 0;
+  margin-top: -80px;
   text-align: left;
 }
 
 .heading p {
   text-align: center;
+  margin-top: -60px;
+  letter-spacing: 0.25rem;
 }
 
 img {

@@ -1,0 +1,219 @@
+@import url("https://fonts.googleapis.com/css2?family=Baloo+Da+2:wght@400;500;600;700;800&display=swap");
+
+:root {
+  --blue1: rgb(249, 247, 247);
+  --blue2: rgb(219, 226, 239);
+  --blue3: rgb(63, 114, 175);
+  --blue4: rgb(17, 45, 78);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  background-color: var(--blue2);
+  font-family: "Baloo Da 2", cursive;
+}
+
+header {
+  background-color: var(--blue3);
+  color: #fff;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  text-align: center;
+}
+
+header h1 {
+  font-weight: 500;
+  margin-bottom: 0px;
+}
+
+.nav-btn:nth-child(2) {
+  margin: 0 80px;
+}
+
+.nav-btn {
+  background-color: transparent;
+  border: 0;
+  opacity: 0.7;
+  font-family: inherit;
+  color: inherit;
+  font-size: 1.35rem;
+  cursor: pointer;
+}
+
+.nav-btn.active,
+.nav-btn:hover {
+  border-bottom: 2.5px solid #fff;
+  opacity: 1;
+}
+
+.container {
+  position: relative;
+  top: 116px;
+  font-size: large;
+  max-width: 550px;
+  margin: 0 auto;
+  background-color: var(--blue1);
+  border-radius: 0 0 5px 5px;
+  box-shadow: 0 4px 10px rgb(0 0 0 / 15%);
+}
+
+.info-bar {
+  padding: 3px;
+  background-color: var(--blue4);
+  color: #fff;
+  height: 35px;
+  border-radius: 5px 5px 0 0;
+  display: flex;
+  justify-content: space-between;
+}
+
+.info-btn {
+  background-color: transparent;
+  border: 0;
+  color: #fff;
+  cursor: pointer;
+}
+
+.bar {
+  display: flex;
+  justify-content: space-between;
+  border-top: 2px solid #e5e5e5;
+  /* cursor: pointer; */
+  font-size: 1.5rem;
+  padding: 0.1rem 0.5rem;
+}
+
+#des-btn {
+  cursor: pointer;
+  border: 0;
+  border-radius: 5px;
+  background-color: transparent;
+  /* font-size: 1rem; */
+  /* height: 90%; */
+  align-self: center;
+  box-shadow: 0 0 2px 1px rgba(63, 114, 175, 0.6);
+}
+
+/* #des-btn:hover {
+} */
+
+/* .expense-data-bar {
+  height: 50px;
+  overflow: hidden;
+} */
+
+.description {
+  max-height: 0;
+  transition: max-height 0.15s ease-out;
+  overflow: hidden;
+}
+
+.show {
+  max-height: 100px;
+  transition: max-height 0.25s ease-in;
+}
+
+.add-expense-container {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+}
+
+.cross-btn {
+  height: 50px;
+  width: 50px;
+  font-size: 1.5rem;
+  border: 0;
+  border-radius: 50%;
+  background-color: var(--blue3);
+  color: #fff;
+  transform: rotateZ(45deg);
+  cursor: pointer;
+  transition: transform 0.5s ease-in;
+}
+
+.cross-btn.rotate {
+  transform: rotateZ(180deg);
+}
+
+.add-expense {
+  position: absolute;
+  right: 25px;
+  bottom: 25px;
+  background-color: var(--blue1);
+  box-shadow: 0 4px 10px rgb(0 0 0 / 30%);
+  color: var(--blue4);
+  transform-origin: 100% 100%;
+  padding: 10px;
+  border-radius: 5px;
+  scale: 0;
+  transition: scale 0.5s ease-in;
+}
+
+.add-expense.scale {
+  scale: 1;
+}
+
+.form-control {
+  margin: 20px 0;
+  width: 300px;
+}
+
+.form-control input,
+.form-control select,
+.form-control textarea {
+  width: 100%;
+  height: 35px;
+  background-color: transparent;
+}
+
+.form-control input:focus,
+.form-control select:focus,
+.form-control textarea:focus {
+  outline: none;
+}
+
+.add-expense-btn {
+  margin: 0 43%;
+  border: 0;
+  border-radius: 3px;
+  padding: 7px 10px;
+  font-size: 1.1rem;
+  cursor: pointer;
+}
+
+.add-expense h1 {
+  text-align: center;
+  color: var(--blue3);
+}
+
+/* message */
+.msg {
+  color: #fff;
+  padding: 5px;
+  border-radius: 5px;
+  height: 0px;
+  transition: all 0.25s;
+}
+
+.error {
+  background-color: #c21010;
+  height: 35px;
+}
+
+.success {
+  background-color: #2b7a0b;
+  height: 35px;
+}
+
+.edited {
+  background-color: #393e46;
+  height: 35px;
+}

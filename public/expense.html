@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Expense Manager</title>
+    <link rel="stylesheet" href="expense.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css"
+      integrity="sha512-xh6O/CkQoPOWDdYTDqeRdPCVd1SpvCA9XXcUnZS2FmJNp1coAFzvtCN9BmamE+4aHK8yyUHUSCcJHgXloTyT2A=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.27.2/axios.min.js"
+      integrity="sha512-odNmoc1XJy5x1TMVMdC7EMs3IVdItLPlCeL5vSUPN2llYKMJ2eByTTAIiiuqLg+GdNr9hF6z81p27DArRFKT7A=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    ></script>
+  </head>
+  <body>
+    <header>
+      <h1>Day to Day Expenses</h1>
+      <nav id="nav">
+        <button class="nav-btn active">DAILY</button>
+        <button class="nav-btn">MONTHLY</button>
+        <button class="nav-btn">YEARLY</button>
+      </nav>
+    </header>
+    <!-- expense data -->
+    <section class="container">
+      <div class="info-bar">
+        <button class="left-btn info-btn">
+          <i class="fa fa-chevron-left"></i>
+        </button>
+        <span class="date">11 sep 2022</span>
+        <!-- <span class="balance"
+            >Balance&nbsp;&nbsp;<i class="fa fa-inr fa-sm">&nbsp;</i>4345</span
+          > -->
+        <button class="right-btn info-btn">
+          <i class="fa fa-chevron-right"></i>
+        </button>
+      </div>
+      <div id="expense-container">
+        <div class="expense-data-bar">
+          <div class="bar">
+            <button class="des-btn">Category</button>
+            <div class="amount">4345&nbsp;&#8360;</div>
+            <div class="bar-btns">
+              <button class="edit-btn">Edit</button>
+              <button class="delete-btn">Delete</button>
+            </div>
+          </div>
+          <div class="description" id="des">dsfsdflsjfldsjdlfjsld</div>
+        </div>
+      </div>
+    </section>
+    <!-- adding expnese section -->
+    <section class="add-expense-container">
+      <div class="add-expense">
+        <h1>Add Expense</h1>
+        <div class="msg"></div>
+        <form>
+          <div class="form-control">
+            <select name="category" id="category" required>
+              <option value="" selected>Select Category</option>
+              <option value="Movie">Movie</option>
+              <option value="Fuel">Fuel</option>
+              <option value="Vacation">Vacation</option>
+              <option value="Grocery">Grocery</option>
+              <option value="Other">Other</option>
+            </select>
+          </div>
+          <div class="form-control">
+            <input
+              type="number"
+              name="amount"
+              required
+              placeholder="Enter Amount"
+            />
+          </div>
+          <div class="form-control">
+            <textarea
+              name="description"
+              id="description-input"
+              cols="30"
+              rows="10"
+              placeholder="Describe here"
+            ></textarea>
+          </div>
+          <button class="add-expense-btn" type="submit">Add</button>
+        </form>
+      </div>
+      <button class="cross-btn" id="cross-btn">&#9932;</button>
+    </section>
+    <script src="expense.js"></script>
+  </body>
+</html>
