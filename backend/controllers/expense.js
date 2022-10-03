@@ -1,3 +1,4 @@
+const { Sequelize } = require("sequelize");
 const Expense = require("../models/expense");
 
 function isNotValid(str) {
@@ -5,14 +6,26 @@ function isNotValid(str) {
   else return false;
 }
 
+function formatDate(date, options) {
+  return new Intl.DateTimeFormat("en-IN", options).format(date);
+}
+
 exports.postExpense = (req, res, next) => {
+  const today = new Date();
   const { amount, category, description } = req.body;
   if (isNotValid(category) || isNotValid(amount)) {
     return res
       .status(400)
       .send({ type: "error", message: "Invalid Form Data!" });
   }
-  Expense.create({ amount, category, description })
+  Expense.create({
+    amount,
+    category,
+    description,
+    date: today.getDate(),
+    month: today.getMonth(),
+    year: today.getFullYear(),
+  })
     .then((result) => {
       res.status(201).send({
         expense: result,
@@ -28,10 +41,85 @@ exports.postExpense = (req, res, next) => {
     });
 };
 
-exports.getExpenses = (req, res, next) => {
-  Expense.findAll()
+const now = new Date();
+
+exports.getExpensesByDate = (req, res, next) => {
+  const date = new Date(
+    now.getFullYear(),
+    now.getMonth(),
+    now.getDate() + Number(req.query.dateNumber)
+  );
+  const dateToSend = formatDate(date, {
+    day: "2-digit",
+    month: "long",
+    year: "numeric",
+  });
+  let dailySum = 0;
+  Expense.sum("amount", {
+    where: {
+      date: date.getDate(),
+      month: date.getMonth(),
+      year: date.getFullYear(),
+    },
+  })
+    .then((sum) => {
+      dailySum = sum;
+      return Expense.findAll({
+        where: {
+          date: date.getDate(),
+          month: date.getMonth(),
+          year: date.getFullYear(),
+        },
+      });
+    })
     .then((expenses) => {
-      res.status(200).send(expenses);
+      res
+        .status(200)
+        .send({ expenses: expenses, date: dateToSend, dailySum: dailySum });
+    })
+    .catch((err) => {
+      res.status(500).send(err);
+    });
+};
+
+exports.getExpensesByMonth = (req, res, next) => {
+  const firstDayOfMonth = new Date(
+    now.getFullYear(),
+    now.getMonth() + Number(req.query.monthNumber),
+    1
+  );
+  const monthToSend = formatDate(firstDayOfMonth, {
+    month: "long",
+    year: "numeric",
+  });
+  Expense.sum("amount", {
+    where: {
+      month: firstDayOfMonth.getMonth(),
+      year: firstDayOfMonth.getFullYear(),
+    },
+  })
+    .then((sum) => {
+      res.status(200).send({ monthlySum: sum, month: monthToSend });
+    })
+    .catch((err) => {
+      res.status(500).send(err);
+    });
+};
+
+exports.getExpensesByYear = (req, res, next) => {
+  const year = new Date().getFullYear() + Number(req.query.yearNumber);
+  Expense.findAll({
+    where: {
+      year: year,
+    },
+    attributes: [
+      "month",
+      [Sequelize.fn("SUM", Sequelize.col("amount")), "monthlySum"],
+    ],
+    group: ["month"],
+  })
+    .then((monthlyData) => {
+      res.status(200).send({ monthWiseSum: monthlyData, year: year });
     })
     .catch((err) => {
       res.status(500).send(err);

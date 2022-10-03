@@ -11,7 +11,7 @@ app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 
 app.use("/user", userRoutes);
-app.use("/expense",expenseRoutes);
+app.use("/expense", expenseRoutes);
 
 sequelize
   .sync()

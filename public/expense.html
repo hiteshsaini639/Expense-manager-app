@@ -24,41 +24,90 @@
     <header>
       <h1>Day to Day Expenses</h1>
       <nav id="nav">
-        <button class="nav-btn active">DAILY</button>
-        <button class="nav-btn">MONTHLY</button>
-        <button class="nav-btn">YEARLY</button>
+        <button id="0" class="nav-btn active">DAILY</button>
+        <button id="1" class="nav-btn">MONTHLY</button>
+        <button id="2" class="nav-btn">YEARLY</button>
       </nav>
     </header>
-    <!-- expense data -->
-    <section class="container">
-      <div class="info-bar">
-        <button class="left-btn info-btn">
-          <i class="fa fa-chevron-left"></i>
-        </button>
-        <span class="date">11 sep 2022</span>
-        <!-- <span class="balance"
+    <!-- expense data daily container -->
+    <div class="main-container">
+      <div id="flex-container">
+        <section class="container" id="daily-container">
+          <div class="info-bar" id="daily-info-bar">
+            <button class="left-btn info-btn">
+              <i class="fa fa-chevron-left"></i>
+            </button>
+            <span class="date" id="0">11 sep 2022</span>
+            <!-- <span class="balance"
             >Balance&nbsp;&nbsp;<i class="fa fa-inr fa-sm">&nbsp;</i>4345</span
           > -->
-        <button class="right-btn info-btn">
-          <i class="fa fa-chevron-right"></i>
-        </button>
-      </div>
-      <div id="expense-container">
-        <div class="expense-data-bar">
-          <div class="bar">
-            <button class="des-btn">Category</button>
-            <div class="amount">4345&nbsp;&#8360;</div>
-            <div class="bar-btns">
-              <button class="edit-btn">Edit</button>
-              <button class="delete-btn">Delete</button>
+            <button class="right-btn info-btn">
+              <i class="fa fa-chevron-right"></i>
+            </button>
+          </div>
+          <div class="expense-container" id="daily-expense-container">
+            <div class="expense-data-bar">
+              <div class="bar">
+                <button class="des-btn">Category</button>
+                <div class="amount">4345&nbsp;&#8360;</div>
+                <div class="bar-btns">
+                  <button class="edit-btn">Edit</button>
+                  <button class="delete-btn">Delete</button>
+                </div>
+              </div>
+              <div class="description" id="des">dsfsdflsjfldsjdlfjsld</div>
             </div>
           </div>
-          <div class="description" id="des">dsfsdflsjfldsjdlfjsld</div>
-        </div>
+          <div class="daily-total">
+            Total&nbsp;<span id="daily-sum">43454</span>&nbsp;&#8360;
+          </div>
+        </section>
+        <!-- expense data monthly container -->
+        <section class="container" id="monthly-container">
+          <div class="info-bar" id="monthly-info-bar">
+            <button class="left-btn info-btn">
+              <i class="fa fa-chevron-left"></i>
+            </button>
+            <span class="month" id="0">October 2022</span>
+            <button class="right-btn info-btn">
+              <i class="fa fa-chevron-right"></i>
+            </button>
+          </div>
+          <div class="expense-container" id="monthly-expense-container">
+            <div class="expense-data-bar">
+              <div class="bar">
+                <div class="total-by">Total Expense</div>
+                <div class="monthly-total">
+                  <span id="monthly-sum">4345</span>&nbsp;&#8360;
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+        <!-- expense data yearly container -->
+        <section class="container" id="yearly-container">
+          <div class="info-bar" id="yearly-info-bar">
+            <button class="left-btn info-btn">
+              <i class="fa fa-chevron-left"></i>
+            </button>
+            <span class="year" id="0">2022</span>
+            <button class="right-btn info-btn">
+              <i class="fa fa-chevron-right"></i>
+            </button>
+          </div>
+          <div class="expense-container" id="yearly-expense-container">
+            <div class="expense-data-bar">
+              <div class="bar">
+                <div class="total-by">October</div>
+                <div class="monthly-total">4345&nbsp;&#8360;</div>
+              </div>
+            </div>
+          </div>
+        </section>
       </div>
-    </section>
+    </div>
     <!-- adding expnese section -->
-    <section class="add-expense-container">
+    <section id="add-expense-container">
       <div class="add-expense">
         <h1>Add Expense</h1>
         <div class="msg"></div>

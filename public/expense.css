@@ -26,6 +26,7 @@ header {
   left: 0;
   right: 0;
   text-align: center;
+  z-index: 1;
 }
 
 header h1 {
@@ -53,15 +54,32 @@ header h1 {
   opacity: 1;
 }
 
-.container {
-  position: relative;
-  top: 116px;
-  font-size: large;
+.main-container {
   max-width: 550px;
+  position: relative;
   margin: 0 auto;
+  top: 116px;
+  /* border-radius: 0 0 5px 5px; */
+  overflow: hidden;
+}
+
+/* responsive ness in width container */
+
+#flex-container {
+  display: inline-flex;
+  transform: translateX(0);
+  transition: transform 0.5s ease-in-out;
+}
+
+.container {
+  font-size: large;
+  width: 550px;
   background-color: var(--blue1);
-  border-radius: 0 0 5px 5px;
-  box-shadow: 0 4px 10px rgb(0 0 0 / 15%);
+  height: 100%;
+  /* box-shadow: 0 4px 10px rgb(0 0 0 / 15%); */
+}
+
+.expense-container {
 }
 
 .info-bar {
@@ -69,25 +87,26 @@ header h1 {
   background-color: var(--blue4);
   color: #fff;
   height: 35px;
-  border-radius: 5px 5px 0 0;
+  /* border-radius: 5px 5px 0 0; */
   display: flex;
   justify-content: space-between;
 }
 
 .info-btn {
-  background-color: transparent;
+  background-color: rgb(11, 36, 65);
   border: 0;
   color: #fff;
   cursor: pointer;
+  width: 30px;
 }
 
 .bar {
   display: flex;
   justify-content: space-between;
-  border-top: 2px solid #e5e5e5;
+
   /* cursor: pointer; */
   font-size: 1.5rem;
-  padding: 0.1rem 0.5rem;
+  padding: 0.1rem 0;
 }
 
 #des-btn {
@@ -104,10 +123,10 @@ header h1 {
 /* #des-btn:hover {
 } */
 
-/* .expense-data-bar {
-  height: 50px;
-  overflow: hidden;
-} */
+.expense-data-bar {
+  border: 1px solid #e1e1e1;
+  padding: 0 0.5rem;
+}
 
 .description {
   max-height: 0;
@@ -120,7 +139,7 @@ header h1 {
   transition: max-height 0.25s ease-in;
 }
 
-.add-expense-container {
+#add-expense-container {
   position: fixed;
   bottom: 20px;
   right: 20px;
