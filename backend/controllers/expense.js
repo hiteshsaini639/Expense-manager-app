@@ -18,14 +18,15 @@ exports.postExpense = (req, res, next) => {
       .status(400)
       .send({ type: "error", message: "Invalid Form Data!" });
   }
-  Expense.create({
-    amount,
-    category,
-    description,
-    date: today.getDate(),
-    month: today.getMonth(),
-    year: today.getFullYear(),
-  })
+  req.user
+    .createExpense({
+      amount,
+      category,
+      description,
+      date: today.getDate(),
+      month: today.getMonth(),
+      year: today.getFullYear(),
+    })
     .then((result) => {
       res.status(201).send({
         expense: result,
@@ -44,6 +45,7 @@ exports.postExpense = (req, res, next) => {
 const now = new Date();
 
 exports.getExpensesByDate = (req, res, next) => {
+  console.log(req.user);
   const date = new Date(
     now.getFullYear(),
     now.getMonth(),
@@ -57,6 +59,7 @@ exports.getExpensesByDate = (req, res, next) => {
   let dailySum = 0;
   Expense.sum("amount", {
     where: {
+      userId: req.user.id,
       date: date.getDate(),
       month: date.getMonth(),
       year: date.getFullYear(),
@@ -64,7 +67,7 @@ exports.getExpensesByDate = (req, res, next) => {
   })
     .then((sum) => {
       dailySum = sum;
-      return Expense.findAll({
+      return req.user.getExpenses({
         where: {
           date: date.getDate(),
           month: date.getMonth(),
@@ -94,6 +97,7 @@ exports.getExpensesByMonth = (req, res, next) => {
   });
   Expense.sum("amount", {
     where: {
+      userId: req.user.id,
       month: firstDayOfMonth.getMonth(),
       year: firstDayOfMonth.getFullYear(),
     },
@@ -108,16 +112,17 @@ exports.getExpensesByMonth = (req, res, next) => {
 
 exports.getExpensesByYear = (req, res, next) => {
   const year = new Date().getFullYear() + Number(req.query.yearNumber);
-  Expense.findAll({
-    where: {
-      year: year,
-    },
-    attributes: [
-      "month",
-      [Sequelize.fn("SUM", Sequelize.col("amount")), "monthlySum"],
-    ],
-    group: ["month"],
-  })
+  req.user
+    .getExpenses({
+      where: {
+        year: year,
+      },
+      attributes: [
+        "month",
+        [Sequelize.fn("SUM", Sequelize.col("amount")), "monthlySum"],
+      ],
+      group: ["month"],
+    })
     .then((monthlyData) => {
       res.status(200).send({ monthWiseSum: monthlyData, year: year });
     })

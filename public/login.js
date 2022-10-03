@@ -21,6 +21,8 @@ form.addEventListener("submit", (e) => {
     .then((response) => {
       if (response.status === 200) {
         notify(response.data);
+        localStorage.setItem("sessionToken", response.data.sessionToken);
+        window.location.href = "./expense.html";
       } else {
         throw { response: response };
       }

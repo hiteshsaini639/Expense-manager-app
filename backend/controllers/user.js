@@ -1,5 +1,6 @@
 const bcrypt = require("bcrypt");
 const User = require("../models/user");
+const jwt = require("jsonwebtoken");
 const saltRounds = 10;
 
 function isNotValid(str) {
@@ -38,6 +39,8 @@ exports.signup = (req, res, next) => {
     });
 };
 
+let user;
+
 exports.login = (req, res, next) => {
   const { email, password } = req.body;
   if (isNotValid(email) || isNotValid(password)) {
@@ -49,13 +52,24 @@ exports.login = (req, res, next) => {
     .then((users) => {
       if (users.length === 0) {
         throw { type: "error", message: "User Not Found!" };
-      } else return bcrypt.compare(password, users[0].password);
+      } else {
+        user = users[0];
+        return bcrypt.compare(password, user.password);
+      }
     })
     .then((result) => {
       if (result) {
+        const token = jwt.sign(
+          { userId: user.id, userEmail: user.email },
+          process.env.TOKEN_SECRET_KEY
+        );
         return res
           .status(200)
-          .send({ type: "success", message: "User Login Successful" });
+          .send({
+            type: "success",
+            message: "User Login Successful",
+            sessionToken: token,
+          });
       } else {
         return res
           .status(401)

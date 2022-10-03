@@ -146,8 +146,13 @@ function loadExpenseData() {
 }
 
 function loadDailyExpenseData(dateNumber) {
+  const token = localStorage.getItem("sessionToken");
   axios
-    .get(`http://localhost:3000/expense/get-by-date?dateNumber=${dateNumber}`)
+    .get(`http://localhost:3000/expense/get-by-date?dateNumber=${dateNumber}`, {
+      headers: {
+        Authorization: token,
+      },
+    })
     .then((response) => {
       if (response.status === 200) {
         dailyExpenseContainer.innerText = "";
@@ -165,10 +170,17 @@ function loadDailyExpenseData(dateNumber) {
       notify(err.response.data);
     });
 }
+
 function loadMonthlyExpenseData(monthNumber) {
+  const token = localStorage.getItem("sessionToken");
   axios
     .get(
-      `http://localhost:3000/expense/get-by-month?monthNumber=${monthNumber}`
+      `http://localhost:3000/expense/get-by-month?monthNumber=${monthNumber}`,
+      {
+        headers: {
+          Authorization: token,
+        },
+      }
     )
     .then((response) => {
       if (response.status === 200) {
@@ -183,9 +195,15 @@ function loadMonthlyExpenseData(monthNumber) {
       notify(err.response.data);
     });
 }
+
 function loadYearlyExpenseData(yearNumber) {
+  const token = localStorage.getItem("sessionToken");
   axios
-    .get(`http://localhost:3000/expense/get-by-year?yearNumber=${yearNumber}`)
+    .get(`http://localhost:3000/expense/get-by-year?yearNumber=${yearNumber}`, {
+      headers: {
+        Authorization: token,
+      },
+    })
     .then((response) => {
       if (response.status === 200) {
         yearlyExpenseContainer.innerText = "";
@@ -205,12 +223,21 @@ function loadYearlyExpenseData(yearNumber) {
 
 form.addEventListener("submit", (e) => {
   e.preventDefault();
+  const token = localStorage.getItem("sessionToken");
   axios
-    .post("http://localhost:3000/expense/add", {
-      category: e.target.category.value,
-      amount: e.target.amount.value,
-      description: e.target.description.value,
-    })
+    .post(
+      "http://localhost:3000/expense/add",
+      {
+        category: e.target.category.value,
+        amount: e.target.amount.value,
+        description: e.target.description.value,
+      },
+      {
+        headers: {
+          Authorization: token,
+        },
+      }
+    )
     .then((response) => {
       if (response.status === 201) {
         notify(response.data.notification);

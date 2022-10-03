@@ -22,6 +22,7 @@ form.addEventListener("submit", (e) => {
     .then((response) => {
       if (response.status === 201) {
         notify(response.data);
+        window.location.href = "./index.html";
       } else {
         throw { response: response };
       }
