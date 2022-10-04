@@ -294,6 +294,7 @@ rzpBtn.addEventListener("click", (e) => {
     image: "./images/512x512bb-modified.png",
     order_id: orderId, //This is a sample Order ID. Pass the `id` obtained in the response of Step 1
     handler: function (response) {
+      const token = localStorage.getItem("sessionToken");
       axios
         .post(
           "http://localhost:3000/order/verify",
@@ -302,6 +303,7 @@ rzpBtn.addEventListener("click", (e) => {
             timeout: 0,
             headers: {
               "Content-Type": "application/json",
+              Authorization: token,
             },
           }
         )

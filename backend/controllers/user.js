@@ -63,13 +63,11 @@ exports.login = (req, res, next) => {
           { userId: user.id, userEmail: user.email },
           process.env.TOKEN_SECRET_KEY
         );
-        return res
-          .status(200)
-          .send({
-            type: "success",
-            message: "User Login Successful",
-            sessionToken: token,
-          });
+        return res.status(200).send({
+          type: "success",
+          message: "User Login Successful",
+          sessionToken: token,
+        });
       } else {
         return res
           .status(401)
@@ -82,5 +80,20 @@ exports.login = (req, res, next) => {
       } else {
         res.status(500).send(err);
       }
+    });
+};
+
+exports.isUserPremium = (req, res, next) => {
+  req.user
+    .getOrders()
+    .then((orders) => {
+      if (orders.length === 0) {
+        return res.status(200).send({ isPremium: false });
+      } else {
+        return res.status(200).send({ isPremium: true });
+      }
+    })
+    .catch((err) => {
+      res.status(500).send(err);
     });
 };

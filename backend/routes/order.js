@@ -7,6 +7,10 @@ const router = express.Router();
 
 router.post("/create-OrderId", orderController.postOrder);
 
-router.post("/verify", orderController.verifyOrder);
+router.post(
+  "/verify",
+  middlewareController.authenticate,
+  orderController.verifyOrder
+);
 
 module.exports = router;

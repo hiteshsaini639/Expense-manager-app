@@ -33,7 +33,9 @@ exports.verifyOrder = (req, res, next) => {
   console.log("sig received ", req.body.response.razorpay_signature);
   console.log("sig generated ", expectedSignature);
   let response = { signatureIsValid: false };
-  if (expectedSignature === req.body.response.razorpay_signature)
+  if (expectedSignature === req.body.response.razorpay_signature) {
     response = { signatureIsValid: true };
+    req.user.createOrder({ orderId });
+  }
   res.status(200).send(response);
 };
