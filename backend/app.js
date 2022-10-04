@@ -6,6 +6,7 @@ dotenv.config();
 const sequelize = require("./util/database");
 const userRoutes = require("./routes/user");
 const expenseRoutes = require("./routes/expense");
+const orderRoutes = require("./routes/order");
 
 const User = require("./models/user");
 const Expense = require("./models/expense");
@@ -17,6 +18,7 @@ app.use(express.json());
 
 app.use("/user", userRoutes);
 app.use("/expense", expenseRoutes);
+app.use("/order", orderRoutes);
 
 app.use("/", (req, res, next) => {
   res.status(404).send({ success: false, message: "Oops...Page Not Found" });

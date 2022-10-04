@@ -1,5 +1,4 @@
-@import url("https://fonts.googleapis.com/css2?family=Muli&family=Fredoka+One&family=Roboto&display=swap");
-@import url("https://fonts.googleapis.com/css2?family=Baloo+Da+2:wght@400;500;600;700;800&display=swap");
+@import url("https://fonts.googleapis.com/css?family=Nunito+Sans:400,400i,700,900&display=swap");
 /* font-family: 'Baloo Da 2', cursive; */
 
 * {
@@ -7,7 +6,7 @@
 }
 
 body {
-  font-family: "Muli", sans-serif;
+  font-family: "Nunito Sans", sans-serif;
   display: flex;
   height: 100vh;
   margin: 0;
@@ -27,8 +26,7 @@ body {
   width: 50vw;
   height: 100vh;
   position: relative;
-  font-family: "Baloo Da 2", cursive;
-  /* font-family: "Roboto", sans-serif; */
+  font-family: "Nunito Sans", sans-serif;
   color: white;
   z-index: -2;
 }

@@ -45,7 +45,6 @@ exports.postExpense = (req, res, next) => {
 const now = new Date();
 
 exports.getExpensesByDate = (req, res, next) => {
-  console.log(req.user);
   const date = new Date(
     now.getFullYear(),
     now.getMonth(),

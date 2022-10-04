@@ -20,7 +20,8 @@ const monthlyInfoBar = document.getElementById("monthly-info-bar");
 const yearlyInfoBar = document.getElementById("yearly-info-bar");
 const monthlySum = document.getElementById("monthly-sum");
 const dailySum = document.getElementById("daily-sum");
-
+const rzpBtn = document.getElementById("rzp-button");
+let orderId;
 const months = [
   "January",
   "February",
@@ -143,6 +144,36 @@ function loadExpenseData() {
   loadDailyExpenseData(0);
   loadMonthlyExpenseData(0);
   loadYearlyExpenseData(0);
+  createOrderId();
+}
+
+//creates new orderId everytime
+function createOrderId() {
+  axios
+    .post(
+      "http://localhost:3000/order/create-OrderId",
+      {
+        amount: "50000",
+      },
+      {
+        timeout: 0,
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    )
+    .then((response) => {
+      if (response.status === 201) {
+        orderId = response.data.orderId;
+        // $("button").show();
+      } else {
+        throw { response: response };
+      }
+    })
+    .catch((err) => {
+      console.log(err);
+      notify(err.response.data);
+    });
 }
 
 function loadDailyExpenseData(dateNumber) {
@@ -250,4 +281,55 @@ form.addEventListener("submit", (e) => {
       console.log(err);
       notify(err.response.data);
     });
+});
+
+rzpBtn.addEventListener("click", (e) => {
+  e.preventDefault();
+  const options = {
+    key: "rzp_test_NfEzOE4dgBCx9v", // Enter the Key ID generated from the Dashboard
+    amount: "50000", // Amount is in currency subunits. Default currency is INR. Hence, 50000 refers to 50000 paise
+    currency: "INR",
+    name: "Expense Manager Pro",
+    description: "Access to Premium Features",
+    image: "./images/512x512bb-modified.png",
+    order_id: orderId, //This is a sample Order ID. Pass the `id` obtained in the response of Step 1
+    handler: function (response) {
+      axios
+        .post(
+          "http://localhost:3000/order/verify",
+          { response },
+          {
+            timeout: 0,
+            headers: {
+              "Content-Type": "application/json",
+            },
+          }
+        )
+        .then((response) => {
+          if (response.data.signatureIsValid) {
+            location.href = "./success.html";
+          } else {
+            alert("Invalid Authentic Source! Try Again.");
+          }
+        });
+    },
+    notes: {
+      address: "Hitesh Corporate Office",
+    },
+    theme: {
+      color: "#112d4e",
+    },
+  };
+  const rzp = new Razorpay(options);
+  rzp.on("payment.failed", function (response) {
+    alert("Transaction Failed! Try Again.");
+    // alert(response.error.code);
+    // alert(response.error.description);
+    // alert(response.error.source);
+    // alert(response.error.step);
+    // alert(response.error.reason);
+    // alert(response.error.metadata.order_id);
+    // alert(response.error.metadata.payment_id);
+  });
+  rzp.open();
 });

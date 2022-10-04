@@ -1,6 +1,8 @@
-@import url("https://fonts.googleapis.com/css2?family=Baloo+Da+2:wght@400;500;600;700;800&display=swap");
-
 :root {
+  /* --blue1: rgb(255, 255, 255);
+  --blue2: rgb(40, 42, 46);
+  --blue3: rgb(28, 29, 31);
+  --blue4: rgb(24, 25, 26); */
   --blue1: rgb(249, 247, 247);
   --blue2: rgb(219, 226, 239);
   --blue3: rgb(63, 114, 175);
@@ -11,31 +13,60 @@
   box-sizing: border-box;
 }
 
+html {
+  height: 100%;
+}
+
 body {
   margin: 0;
   padding: 0;
   background-color: var(--blue2);
-  font-family: "Baloo Da 2", cursive;
+  font-family: "Nunito Sans", sans-serif;
+  display: flex;
+  flex-direction: column;
+  min-height: 100%;
+}
+
+footer {
+  height: 80px;
+  background-color: var(--blue3);
+  flex-shrink: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #fff;
+  padding: 5px;
+}
+
+footer button {
+  font-family: inherit;
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: #ff9a00;
+  background-color: inherit;
+  border: 0;
+  cursor: pointer;
+  margin: auto 0;
+  padding: 0;
+}
+
+main {
+  flex: 1 0 auto;
 }
 
 header {
   background-color: var(--blue3);
   color: #fff;
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
+  flex-shrink: 0;
   text-align: center;
-  z-index: 1;
 }
 
 header h1 {
-  font-weight: 500;
-  margin-bottom: 0px;
+  margin: 5px 0 0 0;
 }
 
 .nav-btn:nth-child(2) {
-  margin: 0 80px;
+  margin: 0 75px;
 }
 
 .nav-btn {
@@ -44,7 +75,7 @@ header h1 {
   opacity: 0.7;
   font-family: inherit;
   color: inherit;
-  font-size: 1.35rem;
+  font-size: 1.25rem;
   cursor: pointer;
 }
 
@@ -56,10 +87,7 @@ header h1 {
 
 .main-container {
   max-width: 550px;
-  position: relative;
   margin: 0 auto;
-  top: 116px;
-  /* border-radius: 0 0 5px 5px; */
   overflow: hidden;
 }
 
@@ -73,21 +101,22 @@ header h1 {
 
 .container {
   font-size: large;
-  width: 550px;
+  min-width: 550px;
   background-color: var(--blue1);
   height: 100%;
   /* box-shadow: 0 4px 10px rgb(0 0 0 / 15%); */
 }
 
-.expense-container {
-}
+/* .expense-container {
+  background-color: rgb(35, 35, 35);
+  color: #fff;
+} */
 
 .info-bar {
   padding: 3px;
   background-color: var(--blue4);
   color: #fff;
   height: 35px;
-  /* border-radius: 5px 5px 0 0; */
   display: flex;
   justify-content: space-between;
 }
@@ -103,8 +132,6 @@ header h1 {
 .bar {
   display: flex;
   justify-content: space-between;
-
-  /* cursor: pointer; */
   font-size: 1.5rem;
   padding: 0.1rem 0;
 }
@@ -141,8 +168,8 @@ header h1 {
 
 #add-expense-container {
   position: fixed;
-  bottom: 20px;
-  right: 20px;
+  bottom: 90px;
+  right: 10px;
 }
 
 .cross-btn {

@@ -1,0 +1,128 @@
+:root {
+  --color-green: rgb(43, 201, 0);
+  --blue2: rgb(219, 226, 239);
+  --blue3: rgb(63, 114, 175);
+  --circle-size: 80px;
+}
+
+body {
+  font-family: "Nunito Sans", sans-serif;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100vw;
+  height: 100vh;
+  background: var(--blue2);
+}
+
+.card {
+  background: white;
+  padding: 60px;
+  border-radius: 5px;
+  box-shadow: 0px 2px 10px 10px rgba(0, 0, 0, 0.05);
+  text-align: center;
+}
+
+.container-circle {
+  display: flex;
+  justify-content: center;
+}
+
+.circle,
+.circle-border {
+  width: var(--circle-size);
+  height: var(--circle-size);
+  border-radius: 50%;
+}
+
+.circle {
+  z-index: 1;
+  position: relative;
+  background: white;
+  transform: scale(1);
+  animation: success-anim 700ms ease;
+}
+
+.circle-border {
+  z-index: 0;
+  position: absolute;
+  background: var(--color-green);
+  transform: scale(1.1);
+  animation: circle-anim 400ms ease;
+}
+
+@keyframes success-anim {
+  0% {
+    transform: scale(0);
+  }
+  30% {
+    transform: scale(0);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+@keyframes circle-anim {
+  from {
+    transform: scale(0);
+  }
+  to {
+    transform: scale(1.1);
+  }
+}
+
+.success::before,
+.success::after {
+  content: "";
+  display: block;
+  height: 4px;
+  background: var(--color-green);
+  position: absolute;
+}
+
+.success::before {
+  width: 22px;
+  top: 58%;
+  left: 23%;
+  transform: rotateZ(50deg);
+}
+
+.success::after {
+  width: 35px;
+  top: 50%;
+  left: 35%;
+  transform: rotateZ(-50deg);
+}
+
+h1 {
+  color: var(--color-green);
+  font-weight: 900;
+  font-size: 40px;
+  margin-bottom: 10px;
+}
+p {
+  color: #404f5e;
+  font-size: 20px;
+}
+
+button {
+  font-family: inherit;
+  font-size: 15px;
+  border-radius: 5px;
+  border: 1px solid var(--blue3);
+  color: var(--blue3);
+  padding: 10px;
+  background-color: inherit;
+  cursor: pointer;
+  transition: color 0.3s ease-in, background-color 0.3s ease-in;
+}
+
+button:hover {
+  background-color: var(--blue3);
+  color: #fff;
+}
+
+button:active {
+  transform: scale(0.98);
+}
