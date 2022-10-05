@@ -119,6 +119,7 @@ if (leaderbordBtn) {
       .then((response) => {
         if (response.status === 200) {
           removeActive();
+          leaderboardContainer.innerText = "";
           userContainer.classList.remove("show-user");
           flexContainer.style.transform = "translateX(-1650px)";
           response.data.userWiseExpense.forEach((userExpense) => {
