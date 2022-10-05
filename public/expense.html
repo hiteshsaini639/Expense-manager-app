@@ -6,23 +6,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Expense Manager</title>
     <link rel="stylesheet" href="expense.css" />
+    <script src="https://use.fontawesome.com/ebe2ab4ee2.js"></script>
     <script
       src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.27.2/axios.min.js"
       integrity="sha512-odNmoc1XJy5x1TMVMdC7EMs3IVdItLPlCeL5vSUPN2llYKMJ2eByTTAIiiuqLg+GdNr9hF6z81p27DArRFKT7A=="
       crossorigin="anonymous"
       referrerpolicy="no-referrer"
     ></script>
-    <script src="membership.js"></script>
     <link
       href="https://fonts.googleapis.com/css?family=Nunito+Sans:400,400i,700,900&display=swap"
       rel="stylesheet"
-    />
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css"
-      integrity="sha512-xh6O/CkQoPOWDdYTDqeRdPCVd1SpvCA9XXcUnZS2FmJNp1coAFzvtCN9BmamE+4aHK8yyUHUSCcJHgXloTyT2A=="
-      crossorigin="anonymous"
-      referrerpolicy="no-referrer"
     />
   </head>
   <body>
@@ -33,6 +26,26 @@
         <button id="1" class="nav-btn">MONTHLY</button>
         <button id="2" class="nav-btn">YEARLY</button>
       </nav>
+      <!-- user -->
+      <section class="user-container" id="user-container">
+        <div class="user">
+          <p>logged in as:</p>
+          <div class="user-name">
+            <span class="fa-stack fa-lg">
+              <i class="fa fa-square-o fa-stack-2x"></i>
+              <i class="fa fa-user fa-stack-1x"></i>
+            </span>
+            <h1 style="display: inline-block" id="user-name">
+              Hitesh kumar saini
+            </h1>
+          </div>
+          <a href="./index.html"><button class="logout">Logout</button></a>
+          <div id="pro-depending"></div>
+        </div>
+        <button class="user-btn" id="user-btn">
+          <i class="fa fa-user-circle"></i>
+        </button>
+      </section>
     </header>
     <main>
       <!-- expense data daily container -->
@@ -40,22 +53,18 @@
         <div id="flex-container">
           <section class="container" id="daily-container">
             <div class="info-bar" id="daily-info-bar">
-              <button class="left-btn info-btn">
-                <i class="fa fa-chevron-left"></i>
-              </button>
+              <button class="left-btn info-btn">&#x276E;</button>
               <span class="date" id="0">11 sep 2022</span>
               <!-- <span class="balance"
             >Balance&nbsp;&nbsp;<i class="fa fa-inr fa-sm">&nbsp;</i>4345</span
           > -->
-              <button class="right-btn info-btn">
-                <i class="fa fa-chevron-right"></i>
-              </button>
+              <button class="right-btn info-btn">&#x276F;</button>
             </div>
             <div class="expense-container" id="daily-expense-container">
               <div class="expense-data-bar">
                 <div class="bar">
                   <button class="des-btn">Category</button>
-                  <div class="amount">4345&nbsp;&#8360;</div>
+                  <div class="amount">4345&nbsp; &#x20B9;</div>
                   <div class="bar-btns">
                     <button class="edit-btn">Edit</button>
                     <button class="delete-btn">Delete</button>
@@ -65,26 +74,23 @@
               </div>
             </div>
             <div class="daily-total">
-              Total&nbsp;<span id="daily-sum">43454</span>&nbsp;&#8360;
+              Total&nbsp;<span id="daily-sum">43454</span>&nbsp;
+              <i class="fa fa-inr" aria-hidden="true" style="color: brown"></i>
             </div>
           </section>
           <!-- expense data monthly container -->
           <section class="container" id="monthly-container">
             <div class="info-bar" id="monthly-info-bar">
-              <button class="left-btn info-btn">
-                <i class="fa fa-chevron-left"></i>
-              </button>
+              <button class="left-btn info-btn">&#x276E;</button>
               <span class="month" id="0">October 2022</span>
-              <button class="right-btn info-btn">
-                <i class="fa fa-chevron-right"></i>
-              </button>
+              <button class="right-btn info-btn">&#x276F;</button>
             </div>
             <div class="expense-container" id="monthly-expense-container">
               <div class="expense-data-bar">
                 <div class="bar">
                   <div class="total-by">Total Expense</div>
                   <div class="monthly-total">
-                    <span id="monthly-sum">4345</span>&nbsp;&#8360;
+                    <span id="monthly-sum">4345</span>&nbsp; &#x20B9;
                   </div>
                 </div>
               </div>
@@ -93,30 +99,44 @@
           <!-- expense data yearly container -->
           <section class="container" id="yearly-container">
             <div class="info-bar" id="yearly-info-bar">
-              <button class="left-btn info-btn">
-                <i class="fa fa-chevron-left"></i>
-              </button>
+              <button class="left-btn info-btn">&#x276E;</button>
               <span class="year" id="0">2022</span>
-              <button class="right-btn info-btn">
-                <i class="fa fa-chevron-right"></i>
-              </button>
+              <button class="right-btn info-btn">&#x276F;</button>
             </div>
             <div class="expense-container" id="yearly-expense-container">
               <div class="expense-data-bar">
                 <div class="bar">
                   <div class="total-by">October</div>
-                  <div class="monthly-total">4345&nbsp;&#8360;</div>
+                  <div class="monthly-total">
+                    <span id="monthly-sum">4345</span>&nbsp; &#x20B9;
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+          <!-- leaderboard -->
+          <section class="container" id="leaderboard-container">
+            <div class="info-bar" style="justify-content: center">
+              <span>LeaderBoard</span>
+            </div>
+            <div class="expense-container" id="leaderboard-expense-container">
+              <div class="expense-data-bar">
+                <div class="bar">
+                  <div class="user-name">hitesh kumar saini</div>
+                  <div class="user-total">4345&nbsp; &#x20B9;</div>
                 </div>
               </div>
             </div>
           </section>
         </div>
       </div>
+    </main>
+    <!-- footer -->
+    <footer>
       <!-- adding expnese section -->
       <section id="add-expense-container">
         <div class="add-expense">
           <h1>Add Expense</h1>
-          <div class="msg"></div>
           <form>
             <div class="form-control">
               <select name="category" id="category" required>
@@ -148,14 +168,12 @@
             <button class="add-expense-btn" type="submit">Add</button>
           </form>
         </div>
-        <button class="cross-btn" id="cross-btn">&#9932;</button>
+        <button class="cross-btn" id="cross-btn">&#x2716;</button>
       </section>
-    </main>
-    <!-- footer -->
-    <footer>
-      <button id="rzp-button">Expenses Manager<sup>pro</sup></button>
+      <h1>Expense Manager<sup id="pro">pro</sup></h1>
     </footer>
   </body>
+  <script src="membership.js"></script>
   <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
   <script src="expense.js"></script>
 </html>

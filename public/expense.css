@@ -27,23 +27,17 @@ footer {
   height: 80px;
   background-color: var(--blue3);
   flex-shrink: 0;
-  display: flex;
+  text-align: center;
+  margin-bottom: auto;
+  /* display: flex;
   justify-content: center;
-  align-items: center;
+  align-items: center; */
   color: #fff;
   padding: 5px;
 }
 
-footer button {
-  font-family: inherit;
-  font-size: 1.5rem;
-  font-weight: 600;
-  color: #ff9a00;
-  background-color: inherit;
-  border: 0;
-  cursor: pointer;
+footer h1 {
   margin: auto 0;
-  padding: 0;
 }
 
 main {
@@ -82,7 +76,7 @@ header h1 {
 }
 
 .main-container {
-  max-width: 550px;
+  max-width: 549px;
   margin: 0 auto;
   overflow: hidden;
 }
@@ -162,6 +156,44 @@ header h1 {
   transition: max-height 0.25s ease-in;
 }
 
+.user-container {
+  position: fixed;
+  top: 25px;
+  left: 25px;
+  color: black;
+}
+
+.user-btn {
+  background-color: inherit;
+  cursor: pointer;
+  width: 27px;
+  height: 28px;
+  border-radius: 50%;
+  padding: 0;
+  border: 0;
+  font-size: 1.5rem;
+  color: #fff;
+}
+
+.user {
+  position: absolute;
+  top: 30px;
+  width: 300px;
+  background-color: #fff;
+  padding: 10px;
+  border-radius: 5px;
+  display: none;
+}
+
+.user-container.show-user .user {
+  display: block;
+}
+
+.user-container.show-user .user-btn {
+  background-color: #fff;
+  color: var(--blue3);
+}
+
 #add-expense-container {
   position: fixed;
   bottom: 90px;
@@ -178,7 +210,7 @@ header h1 {
   color: #fff;
   transform: rotateZ(45deg);
   cursor: pointer;
-  transition: transform 0.5s ease-in;
+  transition: transform 0.2s ease-in;
 }
 
 .cross-btn.rotate {
@@ -189,18 +221,18 @@ header h1 {
   position: absolute;
   right: 25px;
   bottom: 25px;
-  background-color: var(--blue1);
-  box-shadow: 0 4px 10px rgb(0 0 0 / 30%);
+  background-color: #fff;
+  /* box-shadow: 0 4px 10px rgb(0 0 0 / 30%); */
   color: var(--blue4);
   transform-origin: 100% 100%;
   padding: 10px;
   border-radius: 5px;
-  scale: 0;
-  transition: scale 0.5s ease-in;
+  transform: scale(0);
+  transition: transform 0.2s ease-in;
 }
 
 .add-expense.scale {
-  scale: 1;
+  transform: scale(1);
 }
 
 .form-control {

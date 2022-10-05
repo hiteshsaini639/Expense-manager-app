@@ -88,9 +88,13 @@ exports.isUserPremium = (req, res, next) => {
     .getOrders()
     .then((orders) => {
       if (orders.length === 0) {
-        return res.status(200).send({ isPremium: false });
+        return res
+          .status(200)
+          .send({ isPremium: false, userName: req.user.name });
       } else {
-        return res.status(200).send({ isPremium: true });
+        return res
+          .status(200)
+          .send({ isPremium: true, userName: req.user.name });
       }
     })
     .catch((err) => {

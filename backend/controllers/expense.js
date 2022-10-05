@@ -1,5 +1,6 @@
 const { Sequelize } = require("sequelize");
 const Expense = require("../models/expense");
+const User = require("../models/user");
 
 function isNotValid(str) {
   if (str == undefined || str.length === 0) return true;
@@ -124,6 +125,25 @@ exports.getExpensesByYear = (req, res, next) => {
     })
     .then((monthlyData) => {
       res.status(200).send({ monthWiseSum: monthlyData, year: year });
+    })
+    .catch((err) => {
+      res.status(500).send(err);
+    });
+};
+
+exports.getLeaderboard = (req, res, next) => {
+  User.findAll({
+    include: [{ model: Expense, attributes: [] }],
+    attributes: [
+      "id",
+      "name",
+      [Sequelize.fn("SUM", Sequelize.col("amount")), "userTotalExpense"],
+    ],
+    group: ["userId"],
+    order: [["userTotalExpense", "ASC"]],
+  })
+    .then((users) => {
+      res.status(200).send({ userWiseExpense: users, userId: req.user.id });
     })
     .catch((err) => {
       res.status(500).send(err);

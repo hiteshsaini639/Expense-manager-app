@@ -11,6 +11,9 @@ const dailyExpenseContainer = document.getElementById(
 const yearlyExpenseContainer = document.getElementById(
   "yearly-expense-container"
 );
+const leaderboardContainer = document.getElementById(
+  "leaderboard-expense-container"
+);
 const flexContainer = document.getElementById("flex-container");
 const dateELe = document.querySelector(".date");
 const monthELe = document.querySelector(".month");
@@ -21,6 +24,10 @@ const yearlyInfoBar = document.getElementById("yearly-info-bar");
 const monthlySum = document.getElementById("monthly-sum");
 const dailySum = document.getElementById("daily-sum");
 const rzpBtn = document.getElementById("rzp-button");
+const userBtn = document.getElementById("user-btn");
+const leaderbordBtn = document.getElementById("leaderbord-btn");
+const userContainer = document.getElementById("user-container");
+
 let orderId;
 const months = [
   "January",
@@ -36,6 +43,10 @@ const months = [
   "November",
   "December",
 ];
+
+userBtn.addEventListener("click", () => {
+  userContainer.classList.toggle("show-user");
+});
 
 dailyInfoBar.addEventListener("click", (e) => {
   if (e.target.closest(".left-btn")) {
@@ -96,6 +107,38 @@ nav.addEventListener("click", (e) => {
   }
 });
 
+if (leaderbordBtn) {
+  leaderbordBtn.addEventListener("click", () => {
+    const token = localStorage.getItem("sessionToken");
+    axios
+      .get(`http://localhost:3000/expense/leaderboard`, {
+        headers: {
+          Authorization: token,
+        },
+      })
+      .then((response) => {
+        if (response.status === 200) {
+          removeActive();
+          userContainer.classList.remove("show-user");
+          flexContainer.style.transform = "translateX(-1650px)";
+          response.data.userWiseExpense.forEach((userExpense) => {
+            if (userExpense.id === response.data.userId) {
+              showLeaderboard(userExpense, "background-color:green");
+            } else {
+              showLeaderboard(userExpense, "");
+            }
+          });
+        } else {
+          throw { response: response };
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+        notify(err.response.data);
+      });
+  });
+}
+
 function removeActive() {
   navBtns.forEach((btn) => {
     btn.classList.remove("active");
@@ -104,7 +147,7 @@ function removeActive() {
 
 // show output on frontend
 function showDailyExpense(expenseData) {
-  const createTextNode = `<div class="expense-data-bar">
+  const textNode = `<div class="expense-data-bar">
   <div class="bar">
     <button class="des-btn">${expenseData.category}</button>
     <div class="amount">${expenseData.amount}&nbsp;&#8360;</div>
@@ -115,17 +158,27 @@ function showDailyExpense(expenseData) {
   </div>
   <div class="description" id="des">${expenseData.description}</div>
 </div>`;
-  dailyExpenseContainer.innerHTML += createTextNode;
+  dailyExpenseContainer.innerHTML += textNode;
 }
 
 function showYearlyExpense(monthData) {
-  const createTextNode = `<div class="expense-data-bar">
+  const textNode = `<div class="expense-data-bar">
   <div class="bar">
     <div class="total-by">${months[monthData.month]}</div>
     <div class="monthly-total">${monthData.monthlySum}&nbsp;&#8360;</div>
   </div>
 </div>`;
-  yearlyExpenseContainer.innerHTML += createTextNode;
+  yearlyExpenseContainer.innerHTML += textNode;
+}
+
+function showLeaderboard(leaderboardData, highlight) {
+  const textNode = `<div class="expense-data-bar" style="${highlight}">
+  <div class="bar">
+    <div class="user-name">${leaderboardData.name}</div>
+    <div class="user-total">${leaderboardData.userTotalExpense}&nbsp; &#x20B9;</div>
+  </div>
+</div>`;
+  leaderboardContainer.innerHTML += textNode;
 }
 
 //show msg function
@@ -283,55 +336,57 @@ form.addEventListener("submit", (e) => {
     });
 });
 
-rzpBtn.addEventListener("click", (e) => {
-  e.preventDefault();
-  const options = {
-    key: "rzp_test_NfEzOE4dgBCx9v", // Enter the Key ID generated from the Dashboard
-    amount: "50000", // Amount is in currency subunits. Default currency is INR. Hence, 50000 refers to 50000 paise
-    currency: "INR",
-    name: "Expense Manager Pro",
-    description: "Access to Premium Features",
-    image: "./images/512x512bb-modified.png",
-    order_id: orderId, //This is a sample Order ID. Pass the `id` obtained in the response of Step 1
-    handler: function (response) {
-      const token = localStorage.getItem("sessionToken");
-      axios
-        .post(
-          "http://localhost:3000/order/verify",
-          { response },
-          {
-            timeout: 0,
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: token,
-            },
-          }
-        )
-        .then((response) => {
-          if (response.data.signatureIsValid) {
-            location.href = "./success.html";
-          } else {
-            alert("Invalid Authentic Source! Try Again.");
-          }
-        });
-    },
-    notes: {
-      address: "Hitesh Corporate Office",
-    },
-    theme: {
-      color: "#112d4e",
-    },
-  };
-  const rzp = new Razorpay(options);
-  rzp.on("payment.failed", function (response) {
-    alert("Transaction Failed! Try Again.");
-    // alert(response.error.code);
-    // alert(response.error.description);
-    // alert(response.error.source);
-    // alert(response.error.step);
-    // alert(response.error.reason);
-    // alert(response.error.metadata.order_id);
-    // alert(response.error.metadata.payment_id);
+if (rzpBtn) {
+  rzpBtn.addEventListener("click", (e) => {
+    e.preventDefault();
+    const options = {
+      key: "rzp_test_NfEzOE4dgBCx9v", // Enter the Key ID generated from the Dashboard
+      amount: "50000", // Amount is in currency subunits. Default currency is INR. Hence, 50000 refers to 50000 paise
+      currency: "INR",
+      name: "Expense Manager Pro",
+      description: "Access to Premium Features",
+      image: "./images/512x512bb-modified.png",
+      order_id: orderId, //This is a sample Order ID. Pass the `id` obtained in the response of Step 1
+      handler: function (response) {
+        const token = localStorage.getItem("sessionToken");
+        axios
+          .post(
+            "http://localhost:3000/order/verify",
+            { response },
+            {
+              timeout: 0,
+              headers: {
+                "Content-Type": "application/json",
+                Authorization: token,
+              },
+            }
+          )
+          .then((response) => {
+            if (response.data.signatureIsValid) {
+              location.href = "./success.html";
+            } else {
+              alert("Invalid Authentic Source! Try Again.");
+            }
+          });
+      },
+      notes: {
+        address: "Hitesh Corporate Office",
+      },
+      theme: {
+        color: "#112d4e",
+      },
+    };
+    const rzp = new Razorpay(options);
+    rzp.on("payment.failed", function (response) {
+      alert("Transaction Failed! Try Again.");
+      // alert(response.error.code);
+      // alert(response.error.description);
+      // alert(response.error.source);
+      // alert(response.error.step);
+      // alert(response.error.reason);
+      // alert(response.error.metadata.order_id);
+      // alert(response.error.metadata.payment_id);
+    });
+    rzp.open();
   });
-  rzp.open();
-});
+}
