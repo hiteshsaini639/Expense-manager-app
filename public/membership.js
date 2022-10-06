@@ -17,12 +17,12 @@ const userNameEle = document.getElementById("user-name");
         root.style.setProperty("--blue2", "rgb(40, 42, 46)");
         root.style.setProperty("--blue3", "rgb(28, 29, 31)");
         root.style.setProperty("--blue4", "rgb(24, 25, 26)");
-        proDependingEle.innerHTML =
-          "<p>Compare your expense with others.</p><button id='leaderbord-btn'>LeaderBoard</button>";
+        // proDependingEle.innerHTML =
+        //   "<p>Compare your expense with others.</p><button id='leaderbord-btn'>LeaderBoard</button>";
       } else {
         proEle.remove();
-        proDependingEle.innerHTML =
-          "<p>Bye Expense Manager Pro</p><button id='rzp-button'>Premium</button>";
+        // proDependingEle.innerHTML =
+        //   "<p>Bye Expense Manager Pro</p><button id='rzp-button'>Premium</button>";
       }
       userNameEle.innerText = response.data.userName;
     })

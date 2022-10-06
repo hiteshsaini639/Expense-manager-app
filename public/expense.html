@@ -40,7 +40,10 @@
             </h1>
           </div>
           <a href="./index.html"><button class="logout">Logout</button></a>
-          <div id="pro-depending"></div>
+          <div id="pro-depending">
+            <p>Compare your expense with others.</p>
+            <button id="leaderboard-btn">LeaderBoard</button>
+          </div>
         </div>
         <button class="user-btn" id="user-btn">
           <i class="fa fa-user-circle"></i>
@@ -117,14 +120,30 @@
           <!-- leaderboard -->
           <section class="container" id="leaderboard-container">
             <div class="info-bar" style="justify-content: center">
-              <span>LeaderBoard</span>
+              <span id="leaderboard-heading">LeaderBoard</span>
+              <span id="history-heading" style="display: none">Downloads</span>
             </div>
             <div class="expense-container" id="leaderboard-expense-container">
               <div class="expense-data-bar">
                 <div class="bar">
                   <div class="user-name">hitesh kumar saini</div>
-                  <div class="user-total">4345&nbsp; &#x20B9;</div>
+                  <div class="user-total">4345 &#x20B9;</div>
                 </div>
+              </div>
+            </div>
+            <div class="expense-data-bar">
+              <div class="bar">
+                <button id="leaderboard-btn2" style="display: none">
+                  LeaderBoard
+                </button>
+                <button id="download-btn">
+                  <i class="fa fa-download fa-lg" aria-hidden="true"></i
+                  >&nbsp;Download
+                </button>
+                <button id="download-history-btn">
+                  <i class="fa fa-history fa-lg" aria-hidden="true"></i
+                  >&nbsp;History
+                </button>
               </div>
             </div>
           </section>

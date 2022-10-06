@@ -25,8 +25,13 @@ const monthlySum = document.getElementById("monthly-sum");
 const dailySum = document.getElementById("daily-sum");
 const rzpBtn = document.getElementById("rzp-button");
 const userBtn = document.getElementById("user-btn");
-const leaderbordBtn = document.getElementById("leaderbord-btn");
+const leaderbordBtn = document.getElementById("leaderboard-btn");
+const leaderbordBtn2 = document.getElementById("leaderboard-btn2");
 const userContainer = document.getElementById("user-container");
+const downloadBtn = document.getElementById("download-btn");
+const showHistoryBtn = document.getElementById("download-history-btn");
+const leaderboardHeading = document.getElementById("leaderboard-heading");
+const historyHeading = document.getElementById("history-heading");
 
 let orderId;
 const months = [
@@ -107,37 +112,39 @@ nav.addEventListener("click", (e) => {
   }
 });
 
-if (leaderbordBtn) {
-  leaderbordBtn.addEventListener("click", () => {
-    const token = localStorage.getItem("sessionToken");
-    axios
-      .get(`http://localhost:3000/expense/leaderboard`, {
-        headers: {
-          Authorization: token,
-        },
-      })
-      .then((response) => {
-        if (response.status === 200) {
-          removeActive();
-          leaderboardContainer.innerText = "";
-          userContainer.classList.remove("show-user");
-          flexContainer.style.transform = "translateX(-1650px)";
-          response.data.userWiseExpense.forEach((userExpense) => {
-            if (userExpense.id === response.data.userId) {
-              showLeaderboard(userExpense, "background-color:green");
-            } else {
-              showLeaderboard(userExpense, "");
-            }
-          });
-        } else {
-          throw { response: response };
-        }
-      })
-      .catch((err) => {
-        console.log(err);
-        notify(err.response.data);
-      });
-  });
+leaderbordBtn2.addEventListener("click", leaderbordHandler);
+leaderbordBtn.addEventListener("click", leaderbordHandler);
+
+function leaderbordHandler() {
+  const token = localStorage.getItem("sessionToken");
+  axios
+    .get(`http://localhost:3000/expense/leaderboard`, {
+      headers: {
+        Authorization: token,
+      },
+    })
+    .then((response) => {
+      if (response.status === 200) {
+        removeActive();
+        leaderboardContainer.innerText = "";
+        userContainer.classList.remove("show-user");
+        flexContainer.style.transform = "translateX(-1650px)";
+        display("inline-block", "none");
+        response.data.userWiseExpense.forEach((userExpense) => {
+          if (userExpense.id === response.data.userId) {
+            showLeaderboard(userExpense, "background-color:green");
+          } else {
+            showLeaderboard(userExpense, "");
+          }
+        });
+      } else {
+        throw { response: response };
+      }
+    })
+    .catch((err) => {
+      console.log(err);
+      notify(err.response.data);
+    });
 }
 
 function removeActive() {
@@ -151,7 +158,7 @@ function showDailyExpense(expenseData) {
   const textNode = `<div class="expense-data-bar">
   <div class="bar">
     <button class="des-btn">${expenseData.category}</button>
-    <div class="amount">${expenseData.amount}&nbsp;&#8360;</div>
+    <div class="amount">${expenseData.amount} &#x20B9;</div>
     <div class="bar-btns">
       <button class="edit-btn">Edit</button>
       <button class="delete-btn">Delete</button>
@@ -166,7 +173,7 @@ function showYearlyExpense(monthData) {
   const textNode = `<div class="expense-data-bar">
   <div class="bar">
     <div class="total-by">${months[monthData.month]}</div>
-    <div class="monthly-total">${monthData.monthlySum}&nbsp;&#8360;</div>
+    <div class="monthly-total">${monthData.monthlySum} &#x20B9;</div>
   </div>
 </div>`;
   yearlyExpenseContainer.innerHTML += textNode;
@@ -176,7 +183,11 @@ function showLeaderboard(leaderboardData, highlight) {
   const textNode = `<div class="expense-data-bar" style="${highlight}">
   <div class="bar">
     <div class="user-name">${leaderboardData.name}</div>
-    <div class="user-total">${leaderboardData.userTotalExpense}&nbsp; &#x20B9;</div>
+    <div class="user-total">${
+      leaderboardData.userTotalExpense == null
+        ? 0
+        : leaderboardData.userTotalExpense
+    } &#x20B9;</div>
   </div>
 </div>`;
   leaderboardContainer.innerHTML += textNode;
@@ -390,4 +401,92 @@ if (rzpBtn) {
     });
     rzp.open();
   });
+}
+
+downloadBtn.addEventListener("click", () => {
+  const token = localStorage.getItem("sessionToken");
+  axios
+    .get(`http://localhost:3000/expense-file/download`, {
+      headers: {
+        Authorization: token,
+      },
+    })
+    .then((response) => {
+      if (response.status === 200) {
+        let a = document.createElement("a");
+        a.href = response.data.fileURL;
+        a.download = "myexpense.csv";
+        a.click();
+      } else {
+        throw { response: response };
+      }
+    })
+    .catch((err) => {
+      console.log(err);
+      notify(err.response.data);
+    });
+});
+
+// formating date local
+function formatDate(date) {
+  const daysPassed = Math.round((new Date() - date) / (1000 * 60 * 60 * 24));
+
+  if (daysPassed === 0) return "Today";
+  else if (daysPassed === 1) return "Yesterday";
+  else if (daysPassed <= 3) return `${daysPassed} days ago`;
+  else {
+    const options = {
+      day: "2-digit",
+      month: "long",
+      year: "numeric",
+      hour: "2-digit",
+      minute: "2-digit",
+    };
+    return new Intl.DateTimeFormat("en-IN", options).format(date);
+  }
+}
+
+function showHistory(historyData) {
+  const downloadedOn = formatDate(new Date(historyData.createdAt));
+  const textNode = `<div class="expense-data-bar">
+  <div class="bar">
+    <div class="downloaded-time">${downloadedOn}</div>
+    <div class="link"><a href="${historyData.fileUrl}" download><button><i class="fa fa-download fa-lg" aria-hidden="true"></i
+      ></button></a></div>
+  </div>
+  </div>`;
+  leaderboardContainer.innerHTML += textNode;
+}
+
+showHistoryBtn.addEventListener("click", () => {
+  const token = localStorage.getItem("sessionToken");
+  axios
+    .get(`http://localhost:3000/expense-file/download-history`, {
+      headers: {
+        Authorization: token,
+      },
+    })
+    .then((response) => {
+      if (response.status === 200) {
+        leaderboardContainer.innerText = "";
+        display("none", "inline-block");
+        response.data.forEach((each) => {
+          showHistory(each);
+        });
+      } else {
+        throw { response: response };
+      }
+    })
+    .catch((err) => {
+      console.log(err);
+      notify(err.response.data);
+    });
+});
+
+function display(type1, type2) {
+  showHistoryBtn.style.display = type1;
+  leaderboardHeading.style.display = type1;
+  downloadBtn.style.display = type1;
+  leaderbordBtn2.style.display = type2;
+  historyHeading.style.display = type2;
 }

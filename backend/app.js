@@ -3,16 +3,18 @@ const cors = require("cors");
 const dotenv = require("dotenv");
 dotenv.config();
 
-const sequelize = require("./util/database");
 const userRoutes = require("./routes/user");
 const expenseRoutes = require("./routes/expense");
 const orderRoutes = require("./routes/order");
 const passwordRoutes = require("./routes/password");
+const expenseFileRoutes = require("./routes/expense-file");
 
+const sequelize = require("./util/database");
 const User = require("./models/user");
 const Expense = require("./models/expense");
 const Order = require("./models/order");
 const ForgotPasswordRequests = require("./models/password");
+const ExpenseFile = require("./models/expense-file");
 
 const app = express();
 app.use(cors());
@@ -23,6 +25,7 @@ app.use("/user", userRoutes);
 app.use("/expense", expenseRoutes);
 app.use("/order", orderRoutes);
 app.use("/password", passwordRoutes);
+app.use("/expense-file", expenseFileRoutes);
 
 app.use("/", (req, res, next) => {
   res.status(404).send({ success: false, message: "Oops...Page Not Found" });
@@ -34,6 +37,8 @@ User.hasMany(Order);
 Order.belongsTo(User);
 User.hasMany(ForgotPasswordRequests);
 ForgotPasswordRequests.belongsTo(User);
+User.hasMany(ExpenseFile);
+ExpenseFile.belongsTo(User);
 
 sequelize
   .sync()
