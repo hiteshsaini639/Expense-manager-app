@@ -46,41 +46,56 @@ exports.postExpense = (req, res, next) => {
 const now = new Date();
 
 exports.getExpensesByDate = (req, res, next) => {
+  const dateNumber = +req.query.dateNumber;
+  const page = +req.query.page;
+  const rows = +req.query.rows;
   const date = new Date(
     now.getFullYear(),
     now.getMonth(),
-    now.getDate() + Number(req.query.dateNumber)
+    now.getDate() + dateNumber
   );
   const dateToSend = formatDate(date, {
     day: "2-digit",
     month: "long",
     year: "numeric",
   });
-  let dailySum = 0;
-  Expense.sum("amount", {
+
+  let sumAndCount = { count: 0, sum: 0 };
+  Expense.findAll({
+    attributes: [
+      [Sequelize.fn("COUNT", Sequelize.col("id")), "count"],
+      [Sequelize.fn("SUM", Sequelize.col("amount")), "total"],
+    ],
+    group: ["userId"],
     where: {
-      userId: req.user.id,
+      userId: 1,
       date: date.getDate(),
       month: date.getMonth(),
       year: date.getFullYear(),
     },
   })
-    .then((sum) => {
-      dailySum = sum;
+    .then((sumAndCounts) => {
+      sumAndCount = sumAndCounts[0];
       return req.user.getExpenses({
         where: {
           date: date.getDate(),
           month: date.getMonth(),
           year: date.getFullYear(),
         },
+        offset: (page - 1) * rows,
+        limit: rows,
       });
     })
     .then((expenses) => {
-      res
-        .status(200)
-        .send({ expenses: expenses, date: dateToSend, dailySum: dailySum });
+      res.status(200).send({
+        actualRows: expenses.length,
+        expenses: expenses,
+        date: dateToSend,
+        totalAndCount: sumAndCount,
+      });
     })
     .catch((err) => {
+      console.log(err);
       res.status(500).send(err);
     });
 };

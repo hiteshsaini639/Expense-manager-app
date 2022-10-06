@@ -32,6 +32,12 @@ const downloadBtn = document.getElementById("download-btn");
 const showHistoryBtn = document.getElementById("download-history-btn");
 const leaderboardHeading = document.getElementById("leaderboard-heading");
 const historyHeading = document.getElementById("history-heading");
+const pageInfo = document.getElementById("page-info");
+const pageBtns = document.querySelector(".page-btns");
+const pageLeftBtn = document.getElementById("page-btn-left");
+const pageRightBtn = document.getElementById("page-btn-right");
+const rowsPerPageInput = document.getElementById("rows-per-page");
+const paginationContainer = document.getElementById("pagination-container");
 
 let orderId;
 const months = [
@@ -55,12 +61,14 @@ userBtn.addEventListener("click", () => {
 
 dailyInfoBar.addEventListener("click", (e) => {
   if (e.target.closest(".left-btn")) {
+    pageBtns.id = 1;
     dateELe.id -= 1;
-    loadDailyExpenseData(dateELe.id);
+    loadDailyExpenseData(dateELe.id, 1);
   }
   if (e.target.closest(".right-btn")) {
+    pageBtns.id = 1;
     dateELe.id = +dateELe.id + 1;
-    loadDailyExpenseData(dateELe.id);
+    loadDailyExpenseData(dateELe.id, 1);
   }
 });
 
@@ -106,8 +114,16 @@ nav.addEventListener("click", (e) => {
     }px)`;
     if (e.target.id === "0") {
       addExpenseContainer.style.display = "block";
+      paginationContainer.style.display = "block";
     } else {
       addExpenseContainer.style.display = "none";
+      paginationContainer.style.display = "none";
+    }
+    if (e.target.id === "1") {
+      loadMonthlyExpenseData(0);
+    }
+    if (e.target.id === "2") {
+      loadYearlyExpenseData(0);
     }
   }
 });
@@ -206,9 +222,8 @@ function notify(notication) {
 window.addEventListener("DOMContentLoaded", loadExpenseData);
 
 function loadExpenseData() {
-  loadDailyExpenseData(0);
-  loadMonthlyExpenseData(0);
-  loadYearlyExpenseData(0);
+  loadDailyExpenseData(0, 1);
+  pageBtns.id = 1;
   createOrderId();
 }
 
@@ -241,22 +256,48 @@ function createOrderId() {
     });
 }
 
-function loadDailyExpenseData(dateNumber) {
+rowsPerPageInput.addEventListener("change", (e) => {
+  localStorage.setItem("rowsPerPage", e.target.value);
+  loadDailyExpenseData(dateELe.id, pageBtns.id);
+});
+
+pageRightBtn.addEventListener("click", () => {
+  pageBtns.id = +pageBtns.id + 1;
+  loadDailyExpenseData(dateELe.id, pageBtns.id);
+});
+
+pageLeftBtn.addEventListener("click", () => {
+  pageBtns.id -= 1;
+  loadDailyExpenseData(dateELe.id, pageBtns.id);
+});
+
+function loadDailyExpenseData(dateNumber, page) {
+  let rows = localStorage.getItem("rowsPerPage");
+  if (rows == null) rows = 5;
   const token = localStorage.getItem("sessionToken");
   axios
-    .get(`http://localhost:3000/expense/get-by-date?dateNumber=${dateNumber}`, {
-      headers: {
-        Authorization: token,
-      },
-    })
+    .get(
+      `http://localhost:3000/expense/get-by-date?dateNumber=${dateNumber}&page=${page}&rows=${rows}`,
+      {
+        headers: {
+          Authorization: token,
+        },
+      }
+    )
     .then((response) => {
       if (response.status === 200) {
+        const { actualRows, expenses, date, totalAndCount } = response.data;
         dailyExpenseContainer.innerText = "";
-        dateELe.innerText = response.data.date;
-        dailySum.innerText = response.data.dailySum;
-        response.data.expenses.forEach((expense) => {
+        dateELe.innerText = date;
+        if (totalAndCount.total) {
+          dailySum.innerText = totalAndCount.total;
+        } else {
+          dailySum.innerText = 0;
+        }
+        expenses.forEach((expense) => {
           showDailyExpense(expense);
         });
+        showPaginationInfo(page, rows, actualRows, totalAndCount.count);
       } else {
         throw { response: response };
       }
@@ -265,6 +306,14 @@ function loadDailyExpenseData(dateNumber) {
       console.log(err);
       notify(err.response.data);
     });
+}
+
+function showPaginationInfo(page, rows, actualRows, totalCount) {
+  const offset = (page - 1) * rows;
+  const lastRow = offset + actualRows;
+  pageInfo.innerText = `${offset + 1}-${lastRow} of ${totalCount}`;
+  pageRightBtn.disabled = !(lastRow < totalCount);
+  pageLeftBtn.disabled = page == 1;
 }
 
 function loadMonthlyExpenseData(monthNumber) {

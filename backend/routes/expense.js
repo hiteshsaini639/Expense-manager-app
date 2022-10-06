@@ -29,6 +29,10 @@ router.get(
   expenseController.getExpensesByYear
 );
 
-router.get("/leaderboard",middlewareController.authenticate, expenseController.getLeaderboard);
+router.get(
+  "/leaderboard",
+  middlewareController.authenticate,
+  expenseController.getLeaderboard
+);
 
 module.exports = router;

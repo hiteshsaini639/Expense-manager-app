@@ -21,6 +21,7 @@ body {
   display: flex;
   flex-direction: column;
   min-height: 100%;
+  overflow-x: hidden;
 }
 
 footer {
@@ -32,6 +33,7 @@ footer {
   /* display: flex;
   justify-content: center;
   align-items: center; */
+  position: relative;
   color: #fff;
   padding: 5px;
 }
@@ -195,7 +197,7 @@ header h1 {
 }
 
 #add-expense-container {
-  position: fixed;
+  position: absolute;
   bottom: 90px;
   right: 10px;
 }
@@ -210,7 +212,7 @@ header h1 {
   color: #fff;
   transform: rotateZ(45deg);
   cursor: pointer;
-  transition: transform 0.2s ease-in;
+  transition: transform 0.1s ease-in;
 }
 
 .cross-btn.rotate {
@@ -228,7 +230,7 @@ header h1 {
   padding: 10px;
   border-radius: 5px;
   transform: scale(0);
-  transition: transform 0.2s ease-in;
+  transition: transform 0.1s ease-in;
 }
 
 .add-expense.scale {
@@ -290,4 +292,34 @@ header h1 {
 .edited {
   background-color: #393e46;
   height: 35px;
+}
+
+.pagination {
+  position: absolute;
+  font-size: 1.2rem;
+  font-weight: 600;
+  left: 0;
+  right: 0;
+  bottom: 95px;
+  color: var(--blue4);
+}
+
+.pagination select {
+  font-size: inherit;
+  border: none;
+  cursor: pointer;
+}
+
+.pagination select:focus {
+  outline: none;
+}
+
+.pagination button {
+  background-color: inherit;
+  border: none;
+  cursor: pointer;
+}
+
+#page-info {
+  margin: 0 20px;
 }
