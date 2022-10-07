@@ -42,7 +42,7 @@ exports.getExpenseFile = (req, res, next) => {
 
 exports.getDownloadHistory = (req, res, next) => {
   req.user
-    .getExpensefiles()
+    .getExpensefiles({ order: [["createdAt", "DESC"]] })
     .then((expenseFiles) => {
       res.status(200).send(expenseFiles);
     })

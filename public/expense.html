@@ -6,13 +6,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Expense Manager</title>
     <link rel="stylesheet" href="expense.css" />
-    <script src="https://use.fontawesome.com/ebe2ab4ee2.js"></script>
-    <script
-      src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.27.2/axios.min.js"
-      integrity="sha512-odNmoc1XJy5x1TMVMdC7EMs3IVdItLPlCeL5vSUPN2llYKMJ2eByTTAIiiuqLg+GdNr9hF6z81p27DArRFKT7A=="
-      crossorigin="anonymous"
-      referrerpolicy="no-referrer"
-    ></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.27.2/axios.min.js"></script>
+    <!-- <script src="https://use.fontawesome.com/ebe2ab4ee2.js"></script> -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
+    />
     <link
       href="https://fonts.googleapis.com/css?family=Nunito+Sans:400,400i,700,900&display=swap"
       rel="stylesheet"
@@ -21,7 +20,7 @@
   <body>
     <header>
       <h1>Day to Day Expenses</h1>
-      <nav id="nav">
+      <nav id="nav" style="visibility: hidden">
         <button id="0" class="nav-btn active">DAILY</button>
         <button id="1" class="nav-btn">MONTHLY</button>
         <button id="2" class="nav-btn">YEARLY</button>
@@ -29,25 +28,97 @@
       <!-- user -->
       <section class="user-container" id="user-container">
         <div class="user">
-          <p>logged in as:</p>
           <div class="user-name">
-            <span class="fa-stack fa-lg">
+            <span class="fa-stack">
               <i class="fa fa-square-o fa-stack-2x"></i>
               <i class="fa fa-user fa-stack-1x"></i>
             </span>
-            <h1 style="display: inline-block" id="user-name">
-              Hitesh kumar saini
-            </h1>
+            <h1 id="user-name">Hitesh kumar saini</h1>
+            <p id="user-email">hiteshsaini639@gmail.com</p>
           </div>
-          <a href="./index.html"><button class="logout">Logout</button></a>
-          <div id="pro-depending">
-            <p>Compare your expense with others.</p>
-            <button id="leaderboard-btn">LeaderBoard</button>
+          <div class="user-profile">
+            <div id="premium-feature" class="features">
+              <button id="leaderboard-btn">
+                &nbsp;<i class="fa fa-tasks" aria-hidden="true"></i
+                >&nbsp;Leaderboard
+              </button>
+              <button id="download-btn">
+                &nbsp;<i class="fa fa-download" aria-hidden="true"></i
+                >&nbsp;Download Data
+              </button>
+              <button id="download-history-btn">
+                &nbsp;<i class="fa fa-history" aria-hidden="true"></i>&nbsp;All
+                Downloads
+              </button>
+              <button id="dark-theme-btn">
+                <input
+                  type="checkbox"
+                  name="darkTheme"
+                  id="dark-theme"
+                  onclick="return false;"
+                  checked
+                />&nbsp;Dark Theme
+              </button>
+            </div>
+            <div id="normal-feature" class="features">
+              <h3>Why you should upgrade to Expense Manager Pro?</h3>
+              <ul class="premium-feature-list">
+                <li>
+                  <i class="fa fa-calculator" aria-hidden="true"></i> Monthly
+                  Expenses <br />
+                  <p>See total expense of a month</p>
+                </li>
+                <li>
+                  <i class="fa fa-calendar" aria-hidden="true"></i> Yearly
+                  Expenses <br />
+                  <p>See month-wise expense of a year</p>
+                </li>
+                <li>
+                  <i class="fa fa-moon-o" aria-hidden="true"></i> Theme <br />
+                  <p>Access to dark theme</p>
+                </li>
+                <li>
+                  <i class="fa fa-tasks" aria-hidden="true"></i> Leaderboard
+                  <br />
+                  <p>See your expense compare to others</p>
+                </li>
+                <li>
+                  <i class="fa fa-download" aria-hidden="true"></i> Download
+                  features <br />
+                  <p>Get your data and download history</p>
+                </li>
+              </ul>
+              <div class="upgrade-btn">
+                <button id="rzp-button" data-orderid="">
+                  <i class="fa fa-angle-double-up" aria-hidden="true"></i
+                  >&nbsp;Upgrade Now
+                </button>
+              </div>
+            </div>
           </div>
+          <a href="./index.html"
+            ><button class="logout">
+              <i class="fa fa-sign-out" aria-hidden="true"></i>Logout
+            </button></a
+          >
         </div>
         <button class="user-btn" id="user-btn">
           <i class="fa fa-user-circle"></i>
         </button>
+      </section>
+      <!-- toast notification -->
+      <section class="toast" id="toast">
+        <div class="toast-content" id="toast-content">
+          <i
+            class="fa fa-check-circle fa-2x"
+            aria-hidden="true"
+            style="color: green"
+          ></i>
+          <div class="message">
+            <span class="text text-1">Success</span>
+            <span class="text text-2">Your changes has been saved</span>
+          </div>
+        </div>
       </section>
     </header>
     <main>
@@ -60,9 +131,6 @@
                 <i class="fa fa-chevron-left" aria-hidden="true"></i>
               </button>
               <span class="date" id="0">11 sep 2022</span>
-              <!-- <span class="balance"
-            >Balance&nbsp;&nbsp;<i class="fa fa-inr fa-sm">&nbsp;</i>4345</span
-          > -->
               <button class="right-btn info-btn">
                 <i class="fa fa-chevron-right" aria-hidden="true"></i>
               </button>
@@ -71,9 +139,8 @@
               <div class="expense-data-bar">
                 <div class="bar">
                   <button class="des-btn">Category</button>
-                  <div class="amount">4345&nbsp; &#x20B9;</div>
+                  <div class="amount">4345&nbsp;&#x20B9;</div>
                   <div class="bar-btns">
-                    <button class="edit-btn">Edit</button>
                     <button class="delete-btn">Delete</button>
                   </div>
                 </div>
@@ -81,8 +148,8 @@
               </div>
             </div>
             <div class="daily-total">
-              Total&nbsp;<span id="daily-sum">43454</span>&nbsp;
-              <i class="fa fa-inr" aria-hidden="true" style="color: brown"></i>
+              Total&nbsp;<span id="daily-sum">43454</span>
+              <i class="fa fa-inr" aria-hidden="true"></i>
             </div>
           </section>
           <!-- expense data monthly container -->
@@ -133,7 +200,9 @@
           <section class="container" id="leaderboard-container">
             <div class="info-bar" style="justify-content: center">
               <span id="leaderboard-heading">LeaderBoard</span>
-              <span id="history-heading" style="display: none">Downloads</span>
+              <span id="history-heading" style="display: none"
+                >All Downloads</span
+              >
             </div>
             <div class="expense-container" id="leaderboard-expense-container">
               <div class="expense-data-bar">
@@ -143,20 +212,12 @@
                 </div>
               </div>
             </div>
-            <div class="expense-data-bar">
-              <div class="bar">
-                <button id="leaderboard-btn2" style="display: none">
-                  LeaderBoard
-                </button>
-                <button id="download-btn">
-                  <i class="fa fa-download fa-lg" aria-hidden="true"></i
-                  >&nbsp;Download
-                </button>
-                <button id="download-history-btn">
-                  <i class="fa fa-history fa-lg" aria-hidden="true"></i
-                  >&nbsp;History
-                </button>
-              </div>
+            <div class="leaderboard-history">
+              <button id="leaderboard-btn2">LeaderBoard</button>
+              <button id="download-history-btn2">
+                <i class="fa fa-history fa-lg" aria-hidden="true"></i
+                >&nbsp;History
+              </button>
             </div>
           </section>
         </div>
@@ -188,8 +249,7 @@
       <!-- adding expnese section -->
       <section id="add-expense-container">
         <div class="add-expense">
-          <h1>Add Expense</h1>
-          <div class="msg"></div>
+          <h1>Add Expenses</h1>
           <form>
             <div class="form-control">
               <select name="category" id="category" required>
@@ -218,15 +278,15 @@
                 placeholder="Describe here"
               ></textarea>
             </div>
-            <button class="add-expense-btn" type="submit">Add</button>
+            <button class="add-expense-btn" type="submit">Submit</button>
           </form>
         </div>
         <button class="cross-btn" id="cross-btn">&#x2716;</button>
       </section>
-      <h1>Expense Manager<sup id="pro">pro</sup></h1>
+      <h1>Expense Manager&nbsp;<sup id="pro"></sup></h1>
     </footer>
   </body>
-  <script src="membership.js"></script>
-  <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+  <script src="profile.js"></script>
   <script src="expense.js"></script>
+  <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
 </html>

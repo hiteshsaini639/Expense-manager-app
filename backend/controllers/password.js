@@ -44,7 +44,6 @@ exports.sendResetPasswordMail = (req, res, next) => {
     });
 };
 
-let userId;
 exports.getResetLink = (req, res, next) => {
   const uuid = req.params.uuid;
   // error handling in all function;
@@ -53,7 +52,6 @@ exports.getResetLink = (req, res, next) => {
       if (request.length === 0) {
         return res.status(404).send("Link Does Not Exists!");
       } else if (request[0].isActive) {
-        userId = request[0].userId;
         request[0].update({
           isActive: false,
         });
@@ -68,14 +66,14 @@ exports.getResetLink = (req, res, next) => {
     });
 };
 
-let existingUser;
 exports.createNewPassword = (req, res, next) => {
+  let existingUser;
+  const email = req.body.email;
   const newPassword = req.body.newPassword;
-  //fix userId issue
-  User.findAll({ where: { id: userId } })
+  User.findAll({ where: { email: email } })
     .then((users) => {
       if (users.length === 0) {
-        throw { type: "error", message: "User Not Found!" };
+        throw { type: "error", message: `${email} Not Found!` };
       } else return users[0];
     })
     .then((user) => {

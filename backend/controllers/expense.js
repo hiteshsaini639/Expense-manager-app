@@ -43,9 +43,8 @@ exports.postExpense = (req, res, next) => {
     });
 };
 
-const now = new Date();
-
 exports.getExpensesByDate = (req, res, next) => {
+  const now = new Date();
   const dateNumber = +req.query.dateNumber;
   const page = +req.query.page;
   const rows = +req.query.rows;
@@ -60,7 +59,7 @@ exports.getExpensesByDate = (req, res, next) => {
     year: "numeric",
   });
 
-  let sumAndCount = { count: 0, sum: 0 };
+  let sumAndCount = { count: 0, total: 0 };
   Expense.findAll({
     attributes: [
       [Sequelize.fn("COUNT", Sequelize.col("id")), "count"],
@@ -75,7 +74,9 @@ exports.getExpensesByDate = (req, res, next) => {
     },
   })
     .then((sumAndCounts) => {
-      sumAndCount = sumAndCounts[0];
+      if (sumAndCounts.length === 1) {
+        sumAndCount = sumAndCounts[0];
+      }
       return req.user.getExpenses({
         where: {
           date: date.getDate(),
@@ -101,6 +102,7 @@ exports.getExpensesByDate = (req, res, next) => {
 };
 
 exports.getExpensesByMonth = (req, res, next) => {
+  const now = new Date();
   const firstDayOfMonth = new Date(
     now.getFullYear(),
     now.getMonth() + Number(req.query.monthNumber),

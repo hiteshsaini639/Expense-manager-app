@@ -16,6 +16,7 @@ form.addEventListener("submit", (e) => {
   if (e.target.confirmPassword.value === e.target.newPassword.value) {
     axios
       .post("http://localhost:3000/password/new-password", {
+        email: e.target.email.value,
         newPassword: e.target.newPassword.value,
       })
       .then((response) => {

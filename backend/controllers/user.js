@@ -39,9 +39,8 @@ exports.signup = (req, res, next) => {
     });
 };
 
-let user;
-
 exports.login = (req, res, next) => {
+  let user;
   const { email, password } = req.body;
   if (isNotValid(email) || isNotValid(password)) {
     return res
@@ -90,11 +89,19 @@ exports.isUserPremium = (req, res, next) => {
       if (orders.length === 0) {
         return res
           .status(200)
-          .send({ isPremium: false, userName: req.user.name });
+          .send({
+            isPremium: false,
+            userName: req.user.name,
+            userEmail: req.user.email,
+          });
       } else {
         return res
           .status(200)
-          .send({ isPremium: true, userName: req.user.name });
+          .send({
+            isPremium: true,
+            userName: req.user.name,
+            userEmail: req.user.email,
+          });
       }
     })
     .catch((err) => {
