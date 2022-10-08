@@ -5,7 +5,11 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Expense Manager</title>
-    <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="styles/style.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
+    />
     <style>
       .box {
         padding: 8px 40px;
@@ -22,17 +26,34 @@
     ></script>
   </head>
   <body>
+    <!-- toast notification -->
+    <section class="toast" id="toast">
+      <div class="toast-content" id="toast-content">
+        <i
+          class="fa fa-check-circle fa-2x"
+          aria-hidden="true"
+          style="color: green"
+        ></i>
+        <div class="message">
+          <span class="text text-1">Success</span>
+          <span class="text text-2">Your changes has been saved</span>
+        </div>
+      </div>
+    </section>
+    <!-- left -->
     <section class="left">
       <div class="heading">
-        <h1>Expense</h1>
-        <h1>Manager</h1>
+        <h1>
+          Expense<br />
+          Manager
+        </h1>
         <p>Track Your Expense</p>
       </div>
     </section>
+    <!-- right -->
     <section class="right">
       <div class="box">
         <h1>Please Signup</h1>
-        <div class="msg"></div>
         <form>
           <div class="form-control">
             <label for="name">Name</label>
@@ -51,6 +72,7 @@
         <p class="text">Or have an account? <a href="./index.html">Login</a></p>
       </div>
     </section>
-    <script src="signup.js"></script>
+    <script src="scripts/toast.js"></script>
+    <script src="scripts/signup.js"></script>
   </body>
 </html>

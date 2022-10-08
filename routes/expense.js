@@ -35,4 +35,10 @@ router.get(
   expenseController.getLeaderboard
 );
 
+router.delete(
+  "/delete/:expenseId",
+  middlewareController.authenticate,
+  expenseController.deleteExpense
+);
+
 module.exports = router;

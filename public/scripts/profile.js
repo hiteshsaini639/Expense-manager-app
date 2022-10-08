@@ -2,7 +2,6 @@ const root = document.querySelector(":root");
 const body = document.querySelector("body");
 const nav = document.getElementById("nav");
 const navBtns = document.querySelectorAll(".nav-btn");
-const toastContent = document.getElementById("toast-content");
 const proEle = document.getElementById("pro");
 const userNameEle = document.getElementById("user-name");
 const userEmailEle = document.getElementById("user-email");
@@ -119,7 +118,7 @@ function leaderbordHandler() {
         display(true, false);
         response.data.userWiseExpense.forEach((userExpense) => {
           if (userExpense.id === response.data.userId) {
-            showLeaderboard(userExpense, "background-color:green");
+            showLeaderboard(userExpense, "background-color:#FF731D");
           } else {
             showLeaderboard(userExpense, "");
           }
@@ -159,10 +158,7 @@ downloadBtn.addEventListener("click", () => {
     })
     .then((response) => {
       if (response.status === 200) {
-        let a = document.createElement("a");
-        a.href = response.data.fileURL;
-        a.download = "myexpense.csv";
-        a.click();
+        location.href = response.data.fileURL;
       } else {
         throw { response: response };
       }
@@ -324,9 +320,12 @@ function proceedToPay(e) {
         )
         .then((response) => {
           if (response.data.signatureIsValid) {
-            location.href = "./success.html";
+            location.href = "./congratulation.html";
           } else {
-            notify("Invalid Authentic Source! Try Again.");
+            notify({
+              type: "error",
+              message: "Invalid Authentic Source! Try Again.",
+            });
           }
         });
     },
@@ -339,7 +338,7 @@ function proceedToPay(e) {
   };
   const rzp = new Razorpay(options);
   rzp.on("payment.failed", function (response) {
-    alert("Transaction Failed! Try Again.");
+    notify({ type: "error", message: "Transaction Failed! Try Again." });
     // alert(response.error.code);
     // alert(response.error.description);
     // alert(response.error.source);
@@ -349,36 +348,4 @@ function proceedToPay(e) {
     // alert(response.error.metadata.payment_id);
   });
   rzp.open();
-}
-
-///////////////////////////////////notification///////////////////////////////
-//show msg function
-function notify(notication) {
-  let textContent;
-  if (notication.type == "success") {
-    textContent = `<i
-    class="fa fa-check-circle fa-2x"
-    aria-hidden="true"
-    style="color: green"
-  ></i>
-  <div class="message">
-    <span class="text text-1">Success</span>
-    <span class="text text-2">${notication.message}</span>
-  </div>`;
-  } else {
-    textContent = `<i
-    class="fa fa-exclamation-circle fa-2x"
-    aria-hidden="true"
-    style="color: red"
-  ></i>
-  <div class="message">
-    <span class="text text-1">Error</span>
-    <span class="text text-2">${notication.message}</span>
-  </div>`;
-  }
-  toastContent.innerHTML = textContent;
-  toastContent.parentElement.classList.add("active");
-  setTimeout(() => {
-    toastContent.parentElement.classList.remove("active");
-  }, 3000);
 }

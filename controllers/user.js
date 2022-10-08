@@ -28,7 +28,7 @@ exports.signup = (req, res, next) => {
       return User.create({ name, email, password: hash });
     })
     .then((result) => {
-      res.status(201).send({ type: "success", message: "Signup Successful" });
+      res.status(201).send();
     })
     .catch((err) => {
       if (err.type === "error") {
@@ -63,14 +63,12 @@ exports.login = (req, res, next) => {
           process.env.TOKEN_SECRET_KEY
         );
         return res.status(200).send({
-          type: "success",
-          message: "User Login Successful",
           sessionToken: token,
         });
       } else {
         return res
           .status(401)
-          .send({ type: "error", message: "User Not Authorized!" });
+          .send({ type: "error", message: "Wrong Password!" });
       }
     })
     .catch((err) => {
@@ -87,21 +85,17 @@ exports.isUserPremium = (req, res, next) => {
     .getOrders()
     .then((orders) => {
       if (orders.length === 0) {
-        return res
-          .status(200)
-          .send({
-            isPremium: false,
-            userName: req.user.name,
-            userEmail: req.user.email,
-          });
+        return res.status(200).send({
+          isPremium: false,
+          userName: req.user.name,
+          userEmail: req.user.email,
+        });
       } else {
-        return res
-          .status(200)
-          .send({
-            isPremium: true,
-            userName: req.user.name,
-            userEmail: req.user.email,
-          });
+        return res.status(200).send({
+          isPremium: true,
+          userName: req.user.name,
+          userEmail: req.user.email,
+        });
       }
     })
     .catch((err) => {

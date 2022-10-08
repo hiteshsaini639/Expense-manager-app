@@ -5,6 +5,13 @@
   --blue4: rgb(17, 45, 78);
 }
 
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active {
+  -webkit-box-shadow: 0 0 0 30px rgb(70, 70, 70) inset !important;
+}
+
 * {
   box-sizing: border-box;
 }
@@ -25,8 +32,12 @@ body {
 }
 
 body.dark-theme .expense-container {
-  background-color: rgb(58, 58, 58);
+  background-color: rgb(40, 42, 46);
   color: #fff;
+}
+
+body.dark-theme .expense-data-bar {
+  border-bottom: 2px solid var(--blue3);
 }
 
 body.dark-theme .pagination {
@@ -57,12 +68,18 @@ body.dark-theme .form-control select,
 body.dark-theme .form-control textarea {
   color: #fff;
   border: 1px solid rgba(241, 241, 241, 0.7);
-  background-color: transparent;
-  cursor: pointer;
+}
+
+body.dark-theme .form-control select option {
+  color: black;
 }
 
 body.dark-theme .add-expense h1 {
   color: #fff;
+}
+
+body.dark-theme footer > h1 {
+  color: rgb(255, 152, 0);
 }
 
 footer {
@@ -91,8 +108,9 @@ header {
   text-align: center;
 }
 
-header h1 {
-  margin: 15px 0 0 0;
+header > h1 {
+  margin: 20px 0 0 0;
+  font-size: clamp(1rem, 7vw, 2.25rem);
 }
 
 .nav-btn:nth-child(2) {
@@ -105,7 +123,7 @@ header h1 {
   opacity: 0.7;
   font-family: inherit;
   color: inherit;
-  font-size: 1.25rem;
+  font-size: clamp(1rem, 4vw, 1.25rem);
   cursor: pointer;
 }
 
@@ -177,7 +195,7 @@ header h1 {
 }
 
 .expense-data-bar {
-  border: 1px solid #e1e1e1;
+  border-bottom: 2px solid var(--blue2);
   padding: 0 0.5rem;
 }
 
@@ -193,6 +211,14 @@ header h1 {
   padding: 5px;
   display: flex;
   justify-content: space-between;
+}
+
+.link button {
+  padding: 5px 10px;
+}
+
+.link button:hover {
+  cursor: pointer;
 }
 
 .description {
@@ -211,7 +237,6 @@ header h1 {
   top: 25px;
   left: 25px;
   color: var(--blue4);
-  /* color need to be fixed */
   z-index: 1;
 }
 
@@ -239,6 +264,10 @@ header h1 {
 .user-name {
   padding: 10px;
   border-bottom: 1px solid rgba(45, 45, 45, 0.15);
+}
+
+.user-name > h1 {
+  margin: 10px 0 0 0;
 }
 
 .user-name p {
@@ -312,12 +341,13 @@ header h1 {
   text-align: left;
   font-size: medium;
   cursor: pointer;
-  padding: 5px;
+  padding: 10px;
   border: 1px solid rgba(45, 45, 45, 0.15);
 }
 
 #premium-feature button:hover {
-  background-color: var(--blue2);
+  background-color: var(--blue3);
+  color: #fff;
 }
 
 .user button.logout {
@@ -485,4 +515,28 @@ header h1 {
 .message .text.text-1 {
   font-weight: 600;
   color: #333;
+}
+
+@media (max-width: 550px) {
+  .main-container {
+    min-width: 100vw;
+  }
+  .container {
+    min-width: 100vw;
+  }
+  .nav-btn:nth-child(2) {
+    margin: 0 auto;
+  }
+  #add-expense-container {
+    bottom: 120px;
+  }
+}
+
+@media (max-width: 380px) {
+  #add-expense-container {
+    bottom: 150px;
+  }
+  .user-container {
+    left: 10px;
+  }
 }

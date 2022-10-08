@@ -1,5 +1,4 @@
 @import url("https://fonts.googleapis.com/css?family=Nunito+Sans:400,400i,700,900&display=swap");
-/* font-family: 'Baloo Da 2', cursive; */
 
 * {
   box-sizing: border-box;
@@ -8,13 +7,11 @@
 body {
   font-family: "Nunito Sans", sans-serif;
   display: flex;
-  height: 100vh;
   margin: 0;
-  overflow: hidden;
 }
 
 .left {
-  background-image: url("./images/unnamed.png");
+  background-image: url("../images/unnamed.png");
   background-repeat: no-repeat;
   background-size: cover;
   background-position: center;
@@ -29,6 +26,7 @@ body {
   font-family: "Nunito Sans", sans-serif;
   color: white;
   z-index: -2;
+  font-size: clamp(1rem, 10vw, 2.25rem);
 }
 
 .left::before {
@@ -43,16 +41,15 @@ body {
 }
 
 .heading h1 {
-  font-size: 3.5rem;
-  white-space: nowrap;
-  margin-top: -80px;
+  margin: 0;
   text-align: left;
 }
 
 .heading p {
   text-align: center;
-  margin-top: -60px;
+  margin: 0;
   letter-spacing: 0.25rem;
+  font-size: 1rem;
 }
 
 img {
@@ -68,6 +65,7 @@ img {
   justify-content: center;
   background-color: rgb(219, 226, 239);
   width: 50vw;
+  height: 100vh;
 }
 
 .box {
@@ -105,7 +103,7 @@ img {
 }
 
 .btn:hover {
-  opacity: 0.95;
+  background-color: rgb(28, 75, 133);
 }
 
 .btn:active {
@@ -144,26 +142,59 @@ input:-webkit-autofill:active {
   -webkit-box-shadow: 0 0 0 30px rgb(249, 247, 247) inset !important;
 }
 
-/* message */
-.msg {
-  color: #fff;
-  padding: 5px;
-  border-radius: 5px;
-  height: 0px;
-  transition: all 0.25s;
+/* toast notification */
+.toast {
+  position: fixed;
+  top: 15px;
+  right: 30px;
+  border-radius: 12px;
+  background: #fff;
+  padding: 20px 35px 20px 25px;
+  box-shadow: 0 6px 20px -5px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  transform: translateX(calc(100% + 30px));
+  transition: all 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.35);
+  z-index: 5;
 }
 
-.error {
-  background-color: #c21010;
-  height: 35px;
+.toast.active {
+  transform: translateX(0%);
 }
 
-.success {
-  background-color: #2b7a0b;
-  height: 35px;
+.toast .toast-content {
+  display: flex;
+  align-items: center;
 }
 
-.edited {
-  background-color: #393e46;
-  height: 35px;
+.toast-content .message {
+  display: flex;
+  flex-direction: column;
+  margin: 0 20px;
+}
+
+.message .text {
+  font-size: 1.2rem;
+  font-weight: 400;
+  color: #666666;
+}
+
+.message .text.text-1 {
+  font-weight: 600;
+  color: #333;
+}
+
+@media (max-width: 770px) {
+  body {
+    overflow: auto;
+    flex-wrap: wrap;
+  }
+  .left {
+    width: 100vh;
+    min-width: 380px;
+    height: 30vh;
+  }
+  .right {
+    width: 100vh;
+    height: 70vh;
+  }
 }

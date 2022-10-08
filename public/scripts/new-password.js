@@ -1,15 +1,4 @@
-const msg = document.querySelector(".msg");
 const form = document.querySelector("form");
-
-//show msg function
-function notify(notication) {
-  msg.textContent = notication.message;
-  msg.classList.add(notication.type);
-  setTimeout(() => {
-    msg.classList.remove(notication.type);
-    msg.textContent = "";
-  }, 2000);
-}
 
 form.addEventListener("submit", (e) => {
   e.preventDefault();
@@ -21,8 +10,7 @@ form.addEventListener("submit", (e) => {
       })
       .then((response) => {
         if (response.status === 200) {
-          notify(response.data);
-          window.location.href = "./index.html";
+          window.location.href = "http://localhost:3000/password-changed.html";
         } else {
           throw { response: response };
         }

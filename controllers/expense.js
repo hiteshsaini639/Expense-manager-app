@@ -67,7 +67,7 @@ exports.getExpensesByDate = (req, res, next) => {
     ],
     group: ["userId"],
     where: {
-      userId: 1,
+      userId: req.user.id,
       date: date.getDate(),
       month: date.getMonth(),
       year: date.getFullYear(),
@@ -161,6 +161,22 @@ exports.getLeaderboard = (req, res, next) => {
   })
     .then((users) => {
       res.status(200).send({ userWiseExpense: users, userId: req.user.id });
+    })
+    .catch((err) => {
+      res.status(500).send(err);
+    });
+};
+
+exports.deleteExpense = (req, res, next) => {
+  const expenseId = +req.params.expenseId;
+  Expense.findByPk(expenseId)
+    .then((expense) => {
+      return expense.destroy();
+    })
+    .then(() => {
+      res
+        .status(200)
+        .send({ type: "success", message: "Expense deleted successfully." });
     })
     .catch((err) => {
       res.status(500).send(err);

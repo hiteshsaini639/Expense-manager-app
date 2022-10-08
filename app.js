@@ -1,5 +1,9 @@
 const express = require("express");
-const cors = require("cors");
+const path = require("path");
+const fs = require("fs");
+const helmet = require("helmet");
+const morgan = require("morgan");
+const compression = require("compression");
 const dotenv = require("dotenv");
 dotenv.config();
 
@@ -17,9 +21,15 @@ const ForgotPasswordRequests = require("./models/password");
 const ExpenseFile = require("./models/expense-file");
 
 const app = express();
-app.use(cors());
+const accessLogStream = fs.createWriteStream(
+  path.join(__dirname, "access.log"),
+  { flags: "a" }
+);
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
+app.use(helmet());
+app.use(compression());
+app.use(morgan("combined", { stream: accessLogStream }));
 
 app.use("/user", userRoutes);
 app.use("/expense", expenseRoutes);
@@ -28,7 +38,11 @@ app.use("/password", passwordRoutes);
 app.use("/expense-file", expenseFileRoutes);
 
 app.use("/", (req, res, next) => {
-  res.status(404).send({ success: false, message: "Oops...Page Not Found" });
+  res.status(200).sendFile(path.join(__dirname, `public/${req.url}`));
+});
+
+app.use("/", (req, res, next) => {
+  res.status(404).send("<h1>Oops...Page Not Found</h1>");
 });
 
 User.hasMany(Expense);

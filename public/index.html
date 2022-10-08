@@ -5,7 +5,11 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Expense Manager</title>
-    <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="styles/style.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
+    />
     <script
       src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.27.2/axios.min.js"
       integrity="sha512-odNmoc1XJy5x1TMVMdC7EMs3IVdItLPlCeL5vSUPN2llYKMJ2eByTTAIiiuqLg+GdNr9hF6z81p27DArRFKT7A=="
@@ -14,6 +18,21 @@
     ></script>
   </head>
   <body>
+    <!-- toast notification -->
+    <section class="toast" id="toast">
+      <div class="toast-content" id="toast-content">
+        <i
+          class="fa fa-check-circle fa-2x"
+          aria-hidden="true"
+          style="color: green"
+        ></i>
+        <div class="message">
+          <span class="text text-1">Success</span>
+          <span class="text text-2">Your changes has been saved</span>
+        </div>
+      </div>
+    </section>
+    <!-- left -->
     <section class="left">
       <div class="heading">
         <h1>Expense</h1>
@@ -21,10 +40,10 @@
         <p>Track Your Expense</p>
       </div>
     </section>
+    <!-- right -->
     <section class="right">
       <div class="box">
         <h1>Please Login</h1>
-        <div class="msg"></div>
         <form>
           <div class="form-control">
             <label for="email">Email</label>
@@ -34,14 +53,18 @@
             <label for="password">Password</label>
             <input id="password" type="password" name="password" required />
           </div>
-          <button class="btn" type="submit">Login</button>
+          <a href="./forgot-password.html">Forgot Password?</a>
+          <button class="btn" type="submit" style="margin-top: 10px">
+            Login
+          </button>
         </form>
         <p class="text">
-          Don't have an account? <a href="./signup.html">Signup<br /></a
-          ><a href="./forgot-password.html">Forgot Password?</a>
+          Don't have an account?
+          <a href="./signup.html">Sign up for free<br /></a>
         </p>
       </div>
     </section>
-    <script src="login.js"></script>
+    <script src="scripts/toast.js"></script>
+    <script src="scripts/login.js"></script>
   </body>
 </html>

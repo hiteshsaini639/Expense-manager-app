@@ -5,7 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Expense Manager</title>
-    <link rel="stylesheet" href="expense.css" />
+    <link rel="stylesheet" href="styles/expense.css" />
     <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.27.2/axios.min.js"></script>
     <!-- <script src="https://use.fontawesome.com/ebe2ab4ee2.js"></script> -->
     <link
@@ -199,7 +199,12 @@
           <!-- leaderboard -->
           <section class="container" id="leaderboard-container">
             <div class="info-bar" style="justify-content: center">
-              <span id="leaderboard-heading">LeaderBoard</span>
+              <span id="leaderboard-heading"
+                >Leaderboard&nbsp;<i
+                  class="fa fa-sort-amount-asc"
+                  aria-hidden="true"
+                ></i
+              ></span>
               <span id="history-heading" style="display: none"
                 >All Downloads</span
               >
@@ -213,7 +218,9 @@
               </div>
             </div>
             <div class="leaderboard-history">
-              <button id="leaderboard-btn2">LeaderBoard</button>
+              <button id="leaderboard-btn2">
+                <i class="fa fa-tasks" aria-hidden="true"></i>&nbsp;LeaderBoard
+              </button>
               <button id="download-history-btn2">
                 <i class="fa fa-history fa-lg" aria-hidden="true"></i
                 >&nbsp;History
@@ -286,7 +293,8 @@
       <h1>Expense Manager&nbsp;<sup id="pro"></sup></h1>
     </footer>
   </body>
-  <script src="profile.js"></script>
-  <script src="expense.js"></script>
+  <script src="scripts/toast.js"></script>
+  <script src="scripts/profile.js"></script>
+  <script src="scripts/expense.js"></script>
   <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
 </html>

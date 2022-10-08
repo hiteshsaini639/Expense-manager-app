@@ -18,7 +18,7 @@ const monthlySum = document.getElementById("monthly-sum");
 const dailySum = document.getElementById("daily-sum");
 const userBtn = document.getElementById("user-btn");
 const pageInfo = document.getElementById("page-info");
-const pageBtns = document.querySelector(".page-btns"); //can be removed
+const pageBtns = document.querySelector(".page-btns");
 const pageLeftBtn = document.getElementById("page-btn-left");
 const pageRightBtn = document.getElementById("page-btn-right");
 const rowsPerPageInput = document.getElementById("rows-per-page");
@@ -45,6 +45,15 @@ userBtn.addEventListener("click", () => {
 crossBtn.addEventListener("click", () => {
   crossBtn.classList.toggle("rotate");
   addExpenseEle.classList.toggle("scale");
+});
+
+document.documentElement.addEventListener("click", (e) => {
+  if (!e.target.closest("#add-expense-container")) {
+    addExpenseEle.classList.remove("scale");
+  }
+  if (!e.target.closest("#user-container")) {
+    userContainer.classList.remove("show-user");
+  }
 });
 
 dailyExpenseContainer.addEventListener("click", (e) => {
@@ -157,7 +166,7 @@ function showDailyExpense(expenseData) {
   <div class="bar">
     <button class="des-btn">${expenseData.category}</button>
     <div class="amount">${expenseData.amount} &#x20B9;</div>
-    <button class="delete-btn">Delete</button>
+    <button class="delete-btn" id="${expenseData.id}">Delete</button>
   </div>
   <div class="description" id="des">${expenseData.description}</div>
 </div>`;
@@ -254,6 +263,28 @@ function showYearlyExpense(monthData) {
   yearlyExpenseContainer.innerHTML += textNode;
 }
 
+dailyExpenseContainer.addEventListener("click", (e) => {
+  if (e.target.classList.contains("delete-btn")) {
+    const token = localStorage.getItem("sessionToken");
+    axios
+      .delete(`http://localhost:3000/expense/delete/${e.target.id}`, {
+        headers: {
+          Authorization: token,
+        },
+      })
+      .then((response) => {
+        if (response.status === 200) {
+          notify(response.data);
+          e.target.parentElement.parentElement.remove();
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+        notify(err.response.data);
+      });
+  }
+});
+
 form.addEventListener("submit", (e) => {
   e.preventDefault();
   const token = localStorage.getItem("sessionToken");
@@ -275,6 +306,7 @@ form.addEventListener("submit", (e) => {
       if (response.status === 201) {
         notify(response.data.notification);
         showDailyExpense(response.data.expense);
+        dailySum.innerHTML = "<i class='fa fa-refresh' aria-hidden='true'></i>";
         e.target.category.value = "";
         e.target.amount.value = "";
         e.target.description.value = "";
