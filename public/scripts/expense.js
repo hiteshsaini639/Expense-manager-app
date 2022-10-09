@@ -129,7 +129,7 @@ function loadDailyExpenseData(dateNumber, page) {
   const token = localStorage.getItem("sessionToken");
   axios
     .get(
-      `http://localhost:3000/expense/get-by-date?dateNumber=${dateNumber}&page=${page}&rows=${rows}`,
+      `http://52.69.79.61:3000/expense/get-by-date?dateNumber=${dateNumber}&page=${page}&rows=${rows}`,
       {
         headers: {
           Authorization: token,
@@ -196,7 +196,7 @@ function loadMonthlyExpenseData(monthNumber) {
   const token = localStorage.getItem("sessionToken");
   axios
     .get(
-      `http://localhost:3000/expense/get-by-month?monthNumber=${monthNumber}`,
+      `http://52.69.79.61:3000/expense/get-by-month?monthNumber=${monthNumber}`,
       {
         headers: {
           Authorization: token,
@@ -231,11 +231,14 @@ yearlyInfoBar.addEventListener("click", (e) => {
 function loadYearlyExpenseData(yearNumber) {
   const token = localStorage.getItem("sessionToken");
   axios
-    .get(`http://localhost:3000/expense/get-by-year?yearNumber=${yearNumber}`, {
-      headers: {
-        Authorization: token,
-      },
-    })
+    .get(
+      `http://52.69.79.61:3000/expense/get-by-year?yearNumber=${yearNumber}`,
+      {
+        headers: {
+          Authorization: token,
+        },
+      }
+    )
     .then((response) => {
       if (response.status === 200) {
         yearlyExpenseContainer.innerText = "";
@@ -267,7 +270,7 @@ dailyExpenseContainer.addEventListener("click", (e) => {
   if (e.target.classList.contains("delete-btn")) {
     const token = localStorage.getItem("sessionToken");
     axios
-      .delete(`http://localhost:3000/expense/delete/${e.target.id}`, {
+      .delete(`http://52.69.79.61:3000/expense/delete/${e.target.id}`, {
         headers: {
           Authorization: token,
         },
@@ -290,7 +293,7 @@ form.addEventListener("submit", (e) => {
   const token = localStorage.getItem("sessionToken");
   axios
     .post(
-      `http://localhost:3000/expense/add?dateNumber=${dateELe.id}`,
+      `http://52.69.79.61:3000/expense/add?dateNumber=${dateELe.id}`,
       {
         category: e.target.category.value,
         amount: e.target.amount.value,
