@@ -2,13 +2,25 @@ const sgMail = require("@sendgrid/mail");
 const path = require("path");
 const uuid = require("uuid");
 const bcrypt = require("bcrypt");
+
 const User = require("../models/user");
 const ForgotPasswordRequest = require("../models/password");
+
 const saltRounds = 10;
 sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 
+function isNotValid(str) {
+  if (str == undefined || str.length === 0) return true;
+  else return false;
+}
+
 exports.sendResetPasswordMail = (req, res, next) => {
   const email = req.body.email;
+  if (isNotValid(email)) {
+    return res
+      .status(400)
+      .send({ type: "error", message: "Invalid Form Data!" });
+  }
   User.findAll({ where: { email: email } })
     .then((users) => {
       if (users.length === 0) {
@@ -41,15 +53,14 @@ exports.sendResetPasswordMail = (req, res, next) => {
       if (err.type === "error") {
         res.status(404).send(err);
       } else {
-        res.status(500).send(err);
         console.log(err);
+        res.status(500).send(err);
       }
     });
 };
 
 exports.getResetLink = (req, res, next) => {
   const uuid = req.params.uuid;
-  // error handling in all function;
   ForgotPasswordRequest.findAll({ where: { id: uuid } })
     .then((request) => {
       if (request.length === 0) {
@@ -66,14 +77,19 @@ exports.getResetLink = (req, res, next) => {
       }
     })
     .catch((err) => {
+      console.log(err);
       res.status(500).send(err);
     });
 };
 
 exports.createNewPassword = (req, res, next) => {
   let existingUser;
-  const email = req.body.email;
-  const newPassword = req.body.newPassword;
+  const { email, newPassword } = req.body;
+  if (isNotValid(email) || isNotValid(newPassword)) {
+    return res
+      .status(400)
+      .send({ type: "error", message: "Invalid Form Data!" });
+  }
   User.findAll({ where: { email: email } })
     .then((users) => {
       if (users.length === 0) {

@@ -1,6 +1,8 @@
 const bcrypt = require("bcrypt");
-const User = require("../models/user");
 const jwt = require("jsonwebtoken");
+
+const Order = require("../models/order");
+const User = require("../models/user");
 const saltRounds = 10;
 
 function isNotValid(str) {
@@ -34,6 +36,7 @@ exports.signup = (req, res, next) => {
       if (err.type === "error") {
         res.status(403).send(err);
       } else {
+        console.log(err);
         res.status(500).send(err);
       }
     });
@@ -75,30 +78,31 @@ exports.login = (req, res, next) => {
       if (err.type === "error") {
         res.status(404).send(err);
       } else {
+        console.log(err);
         res.status(500).send(err);
       }
     });
 };
 
 exports.isUserPremium = (req, res, next) => {
-  req.user
-    .getOrders()
-    .then((orders) => {
-      if (orders.length === 0) {
+  Order.findOne({ where: { status: "paid", userId: req.user.id } })
+    .then((order) => {
+      if (order) {
         return res.status(200).send({
-          isPremium: false,
+          isPremium: true,
           userName: req.user.name,
           userEmail: req.user.email,
         });
       } else {
         return res.status(200).send({
-          isPremium: true,
+          isPremium: false,
           userName: req.user.name,
           userEmail: req.user.email,
         });
       }
     })
     .catch((err) => {
+      console.log(err);
       res.status(500).send(err);
     });
 };

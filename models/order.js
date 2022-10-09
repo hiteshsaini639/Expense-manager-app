@@ -2,10 +2,22 @@ const Sequelize = require("sequelize");
 const sequelize = require("../util/database");
 
 const Order = sequelize.define("orders", {
-  orderId: {
+  id: {
     type: Sequelize.STRING,
     allowNull: false,
     primaryKey: true,
+  },
+  paymentId: {
+    type: Sequelize.STRING,
+    allowNull: true,
+  },
+  amount: {
+    type: Sequelize.INTEGER,
+    allowNull: false,
+  },
+  status: {
+    type: Sequelize.STRING,
+    defaultValue: "PENDING",
   },
 });
 

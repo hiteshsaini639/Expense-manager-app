@@ -290,7 +290,7 @@ form.addEventListener("submit", (e) => {
   const token = localStorage.getItem("sessionToken");
   axios
     .post(
-      "http://localhost:3000/expense/add",
+      `http://localhost:3000/expense/add?dateNumber=${dateELe.id}`,
       {
         category: e.target.category.value,
         amount: e.target.amount.value,

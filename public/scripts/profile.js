@@ -268,16 +268,18 @@ function disablePremium() {
 
 //creates new orderId everytime
 function createOrderId() {
+  const token = localStorage.getItem("sessionToken");
   axios
     .post(
       "http://localhost:3000/order/create-OrderId",
       {
-        amount: "50000",
+        amount: "4900",
       },
       {
         timeout: 0,
         headers: {
           "Content-Type": "application/json",
+          Authorization: token,
         },
       }
     )
@@ -298,11 +300,11 @@ function proceedToPay(e) {
   e.preventDefault();
   const options = {
     key: "rzp_test_NfEzOE4dgBCx9v", // Enter the Key ID generated from the Dashboard
-    amount: "50000", // Amount is in currency subunits. Default currency is INR. Hence, 50000 refers to 50000 paise
+    amount: "4900", // Amount is in currency subunits. Default currency is INR. Hence, 50000 refers to 50000 paise
     currency: "INR",
     name: "Expense Manager Pro",
     description: "Access to Premium Features",
-    image: "./images/512x512bb-modified.png",
+    image: "../images/512x512bb-modified.png",
     order_id: rzpBtn.dataset.orderid, //This is a sample Order ID. Pass the `id` obtained in the response of Step 1
     handler: function (response) {
       const token = localStorage.getItem("sessionToken");
@@ -324,7 +326,7 @@ function proceedToPay(e) {
           } else {
             notify({
               type: "error",
-              message: "Invalid Authentic Source! Try Again.",
+              message: "Invalid Authentication Source! Try Again.",
             });
           }
         });

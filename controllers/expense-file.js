@@ -36,6 +36,7 @@ exports.getExpenseFile = (req, res, next) => {
       res.status(200).send({ fileURL: expenseFile.fileUrl });
     })
     .catch((err) => {
+      console.log(err);
       res.status(500).send(err);
     });
 };
@@ -47,6 +48,7 @@ exports.getDownloadHistory = (req, res, next) => {
       res.status(200).send(expenseFiles);
     })
     .catch((err) => {
+      console.log(err);
       res.status(500).send(err);
     });
 };
