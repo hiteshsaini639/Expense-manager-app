@@ -114,7 +114,11 @@ function leaderbordHandler() {
         paginationContainer.style.display = "none";
         leaderboardContainer.innerText = "";
         userContainer.classList.remove("show-user");
-        flexContainer.style.transform = "translateX(-1650px)";
+        if (window.innerWidth >= 550) {
+          flexContainer.style.transform = "translateX(-1650px)";
+        } else {
+          flexContainer.style.transform = "translateX(-300vw)";
+        }
         display(true, false);
         response.data.userWiseExpense.forEach((userExpense) => {
           if (userExpense.id === response.data.userId) {
@@ -187,7 +191,11 @@ function showHistoryHandler() {
         paginationContainer.style.display = "none";
         leaderboardContainer.innerText = "";
         userContainer.classList.remove("show-user");
-        flexContainer.style.transform = "translateX(-1650px)";
+        if (window.innerWidth >= 550) {
+          flexContainer.style.transform = "translateX(-1650px)";
+        } else {
+          flexContainer.style.transform = "translateX(-300vw)";
+        }
         display(false, true);
         response.data.forEach((each) => {
           showHistory(each);
