@@ -66,9 +66,15 @@ nav.addEventListener("click", (e) => {
   if (e.target.classList.contains("nav-btn")) {
     removeActive();
     e.target.classList.add("active");
-    flexContainer.style.transform = `translateX(${
-      -550 * Number(e.target.id)
-    }px)`;
+    if (window.innerWidth >= 550) {
+      flexContainer.style.transform = `translateX(${
+        -550 * Number(e.target.id)
+      }px)`;
+    } else {
+      flexContainer.style.transform = `translateX(${
+        -100 * Number(e.target.id)
+      }vw)`;
+    }
     if (e.target.id === "0") {
       pageBtns.id = 1;
       loadDailyExpenseData(dateELe.id, 1);
