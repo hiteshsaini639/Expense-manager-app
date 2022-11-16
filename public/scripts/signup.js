@@ -3,7 +3,7 @@ const form = document.querySelector("form");
 form.addEventListener("submit", (e) => {
   e.preventDefault();
   axios
-    .post("http://52.69.79.61:3000/user/signup", {
+    .post("http://localhost:3000/user/signup", {
       name: e.target.name.value,
       email: e.target.email.value,
       password: e.target.password.value,
@@ -16,7 +16,7 @@ form.addEventListener("submit", (e) => {
       }
     })
     .catch((err) => {
-      notify(err.response.data);
       console.log(err);
+      notify(err.response.data);
     });
 });

@@ -3,7 +3,7 @@ const form = document.querySelector("form");
 form.addEventListener("submit", (e) => {
   e.preventDefault();
   axios
-    .post("http://52.69.79.61:3000/password/forgotpassword", {
+    .post("http://localhost:3000/password/forgotpassword", {
       email: e.target.email.value,
     })
     .then((response) => {

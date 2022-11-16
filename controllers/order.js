@@ -16,12 +16,12 @@ exports.postOrder = (req, res, next) => {
   };
   instance.orders
     .create(options)
-    .then((order) => {
-      return req.user.createOrder({
-        id: order.id,
-        amount: order.amount,
-      });
-    })
+    // .then((order) => {
+    // return req.user.createOrder({
+    //   id: order.id,
+    //   amount: order.amount,
+    // });
+    // })
     .then((order) => {
       res.status(201).send({ orderId: order.id });
     })

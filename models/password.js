@@ -1,16 +1,16 @@
-const Sequelize = require("sequelize");
-const sequelize = require("../util/database");
+// const Sequelize = require("sequelize");
+// const sequelize = require("../util/database");
 
-const ForgotPasswordRequest = sequelize.define("forgotpasswordrequests", {
-  id: {
-    type: Sequelize.UUID,
-    allowNull: false,
-    primaryKey: true,
-  },
-  isActive: {
-    type: Sequelize.BOOLEAN,
-    allowNull: false,
-  },
-});
+// const ForgotPasswordRequest = sequelize.define("forgotpasswordrequests", {
+//   id: {
+//     type: Sequelize.UUID,
+//     allowNull: false,
+//     primaryKey: true,
+//   },
+//   isActive: {
+//     type: Sequelize.BOOLEAN,
+//     allowNull: false,
+//   },
+// });
 
-module.exports = ForgotPasswordRequest;
+// module.exports = ForgotPasswordRequest;

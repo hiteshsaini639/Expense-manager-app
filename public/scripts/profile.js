@@ -27,7 +27,7 @@ const leaderboardContainer = document.getElementById(
 (() => {
   const token = localStorage.getItem("sessionToken");
   axios
-    .get("http://52.69.79.61:3000/user/premium-check", {
+    .get("http://localhost:3000/user/premium-check", {
       headers: {
         Authorization: token,
       },
@@ -102,7 +102,7 @@ function enablePremium() {
 function leaderbordHandler() {
   const token = localStorage.getItem("sessionToken");
   axios
-    .get(`http://52.69.79.61:3000/expense/leaderboard`, {
+    .get(`http://localhost:3000/expense/leaderboard`, {
       headers: {
         Authorization: token,
       },
@@ -151,7 +151,7 @@ downloadBtn.addEventListener("click", () => {
   downloadBtn.firstElementChild.className = "fa fa-spinner fa-pulse";
   const token = localStorage.getItem("sessionToken");
   axios
-    .get(`http://52.69.79.61:3000/expense-file/download`, {
+    .get(`http://localhost:3000/expense-file/download`, {
       headers: {
         Authorization: token,
       },
@@ -175,7 +175,7 @@ downloadBtn.addEventListener("click", () => {
 function showHistoryHandler() {
   const token = localStorage.getItem("sessionToken");
   axios
-    .get(`http://52.69.79.61:3000/expense-file/download-history`, {
+    .get(`http://localhost:3000/expense-file/download-history`, {
       headers: {
         Authorization: token,
       },
@@ -271,7 +271,7 @@ function createOrderId() {
   const token = localStorage.getItem("sessionToken");
   axios
     .post(
-      "http://52.69.79.61:3000/order/create-OrderId",
+      "http://localhost:3000/order/create-OrderId",
       {
         amount: "4900",
       },
@@ -310,7 +310,7 @@ function proceedToPay(e) {
       const token = localStorage.getItem("sessionToken");
       axios
         .post(
-          "http://52.69.79.61:3000/order/verify",
+          "http://localhost:3000/order/verify",
           { response },
           {
             timeout: 0,

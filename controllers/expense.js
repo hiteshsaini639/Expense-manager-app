@@ -1,4 +1,3 @@
-const { Sequelize } = require("sequelize");
 const Expense = require("../models/expense");
 const User = require("../models/user");
 
@@ -25,18 +24,28 @@ exports.postExpense = (req, res, next) => {
     now.getMonth(),
     now.getDate() + dateNumber
   );
-  req.user
-    .createExpense({
-      amount,
-      category,
-      description,
-      date: date.getDate(),
-      month: date.getMonth(),
-      year: date.getFullYear(),
-    })
+
+  const expense = new Expense(
+    amount,
+    category,
+    description,
+    date.getDate(),
+    date.getMonth(),
+    date.getFullYear(),
+    req.user._id
+  );
+
+  expense
+    .save()
     .then((result) => {
       res.status(201).send({
-        expense: result,
+        expense: {
+          id: result.insertedId,
+          amount: amount,
+          category: category,
+          description,
+          description,
+        },
         notification: {
           type: "success",
           message: `${category} Expense Added.`,
@@ -59,6 +68,7 @@ exports.getExpensesByDate = (req, res, next) => {
   const now = new Date();
   const page = +req.query.page;
   const rows = +req.query.rows;
+  const offset = (page - 1) * rows;
   const date = new Date(
     now.getFullYear(),
     now.getMonth(),
@@ -71,32 +81,24 @@ exports.getExpensesByDate = (req, res, next) => {
   });
 
   let sumAndCount = { count: 0, total: 0 };
-  Expense.findAll({
-    attributes: [
-      [Sequelize.fn("COUNT", Sequelize.col("id")), "count"],
-      [Sequelize.fn("SUM", Sequelize.col("amount")), "total"],
-    ],
-    group: ["userId"],
-    where: {
-      userId: req.user.id,
-      date: date.getDate(),
-      month: date.getMonth(),
-      year: date.getFullYear(),
-    },
-  })
+  Expense.getSumAndCount(
+    req.user._id,
+    date.getDate(),
+    date.getMonth(),
+    date.getFullYear()
+  )
     .then((sumAndCounts) => {
-      if (sumAndCounts.length === 1) {
-        sumAndCount = sumAndCounts[0];
+      if (sumAndCounts) {
+        sumAndCount = sumAndCounts;
       }
-      return req.user.getExpenses({
-        where: {
-          date: date.getDate(),
-          month: date.getMonth(),
-          year: date.getFullYear(),
-        },
-        offset: (page - 1) * rows,
-        limit: rows,
-      });
+      return Expense.getExpenses(
+        req.user._id,
+        date.getDate(),
+        date.getMonth(),
+        date.getFullYear(),
+        offset,
+        rows
+      );
     })
     .then((expenses) => {
       res.status(200).send({

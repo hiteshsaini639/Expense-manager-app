@@ -1,7 +1,7 @@
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 
-const Order = require("../models/order");
+// const Order = require("../models/order");
 const User = require("../models/user");
 const saltRounds = 10;
 
@@ -17,17 +17,18 @@ exports.signup = (req, res, next) => {
       .status(400)
       .send({ type: "error", message: "Invalid Form Data!" });
   }
-  User.findAll({ where: { email: email } })
-    .then((users) => {
-      if (users.length === 1) {
+  User.findByEmail(email)
+    .then((user) => {
+      if (user) {
         throw { type: "error", message: "User Already Exists!" };
-      } else return users;
+      } else return user;
     })
     .then(() => {
       return bcrypt.hash(password, saltRounds);
     })
     .then((hash) => {
-      return User.create({ name, email, password: hash });
+      const user = new User(name, email, hash);
+      return user.save();
     })
     .then((result) => {
       res.status(201).send();
@@ -43,26 +44,26 @@ exports.signup = (req, res, next) => {
 };
 
 exports.login = (req, res, next) => {
-  let user;
+  let _user;
   const { email, password } = req.body;
   if (isNotValid(email) || isNotValid(password)) {
     return res
       .status(400)
       .send({ type: "error", message: "Invalid Form Data!" });
   }
-  User.findAll({ where: { email: email } })
-    .then((users) => {
-      if (users.length === 0) {
+  User.findByEmail(email)
+    .then((user) => {
+      if (!user) {
         throw { type: "error", message: "User Not Found!" };
       } else {
-        user = users[0];
+        _user = user;
         return bcrypt.compare(password, user.password);
       }
     })
     .then((result) => {
       if (result) {
         const token = jwt.sign(
-          { userId: user.id, userEmail: user.email },
+          { userId: _user._id, userEmail: _user.email },
           process.env.TOKEN_SECRET_KEY
         );
         return res.status(200).send({
@@ -85,24 +86,29 @@ exports.login = (req, res, next) => {
 };
 
 exports.isUserPremium = (req, res, next) => {
-  Order.findOne({ where: { status: "paid", userId: req.user.id } })
-    .then((order) => {
-      if (order) {
-        return res.status(200).send({
-          isPremium: true,
-          userName: req.user.name,
-          userEmail: req.user.email,
-        });
-      } else {
-        return res.status(200).send({
-          isPremium: false,
-          userName: req.user.name,
-          userEmail: req.user.email,
-        });
-      }
-    })
-    .catch((err) => {
-      console.log(err);
-      res.status(500).send(err);
-    });
+  // Order.findOne({ where: { status: "paid", userId: req.user.id } })
+  //   .then((order) => {
+  //     if (order) {
+  //       return res.status(200).send({
+  //         isPremium: true,
+  //         userName: req.user.name,
+  //         userEmail: req.user.email,
+  //       });
+  //     } else {
+  //       return res.status(200).send({
+  //         isPremium: false,
+  //         userName: req.user.name,
+  //         userEmail: req.user.email,
+  //       });
+  //     }
+  //   })
+  //   .catch((err) => {
+  //     console.log(err);
+  //     res.status(500).send(err);
+  //   });
+  return res.status(200).send({
+    isPremium: false,
+    userName: req.user.name,
+    userEmail: req.user.email,
+  });
 };

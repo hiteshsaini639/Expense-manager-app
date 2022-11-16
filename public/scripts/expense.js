@@ -135,7 +135,7 @@ function loadDailyExpenseData(dateNumber, page) {
   const token = localStorage.getItem("sessionToken");
   axios
     .get(
-      `http://52.69.79.61:3000/expense/get-by-date?dateNumber=${dateNumber}&page=${page}&rows=${rows}`,
+      `http://localhost:3000/expense/get-by-date?dateNumber=${dateNumber}&page=${page}&rows=${rows}`,
       {
         headers: {
           Authorization: token,
@@ -172,7 +172,7 @@ function showDailyExpense(expenseData) {
   <div class="bar">
     <button class="des-btn">${expenseData.category}</button>
     <div class="amount">${expenseData.amount} &#x20B9;</div>
-    <button class="delete-btn" id="${expenseData.id}">Delete</button>
+    <button class="delete-btn" id="${expenseData._id}">Delete</button>
   </div>
   <div class="description" id="des">${expenseData.description}</div>
 </div>`;
@@ -202,7 +202,7 @@ function loadMonthlyExpenseData(monthNumber) {
   const token = localStorage.getItem("sessionToken");
   axios
     .get(
-      `http://52.69.79.61:3000/expense/get-by-month?monthNumber=${monthNumber}`,
+      `http://localhost:3000/expense/get-by-month?monthNumber=${monthNumber}`,
       {
         headers: {
           Authorization: token,
@@ -237,14 +237,11 @@ yearlyInfoBar.addEventListener("click", (e) => {
 function loadYearlyExpenseData(yearNumber) {
   const token = localStorage.getItem("sessionToken");
   axios
-    .get(
-      `http://52.69.79.61:3000/expense/get-by-year?yearNumber=${yearNumber}`,
-      {
-        headers: {
-          Authorization: token,
-        },
-      }
-    )
+    .get(`http://localhost:3000/expense/get-by-year?yearNumber=${yearNumber}`, {
+      headers: {
+        Authorization: token,
+      },
+    })
     .then((response) => {
       if (response.status === 200) {
         yearlyExpenseContainer.innerText = "";
@@ -276,7 +273,7 @@ dailyExpenseContainer.addEventListener("click", (e) => {
   if (e.target.classList.contains("delete-btn")) {
     const token = localStorage.getItem("sessionToken");
     axios
-      .delete(`http://52.69.79.61:3000/expense/delete/${e.target.id}`, {
+      .delete(`http://localhost:3000/expense/delete/${e.target.id}`, {
         headers: {
           Authorization: token,
         },
@@ -299,7 +296,7 @@ form.addEventListener("submit", (e) => {
   const token = localStorage.getItem("sessionToken");
   axios
     .post(
-      `http://52.69.79.61:3000/expense/add?dateNumber=${dateELe.id}`,
+      `http://localhost:3000/expense/add?dateNumber=${dateELe.id}`,
       {
         category: e.target.category.value,
         amount: e.target.amount.value,
@@ -315,6 +312,7 @@ form.addEventListener("submit", (e) => {
       if (response.status === 201) {
         notify(response.data.notification);
         showDailyExpense(response.data.expense);
+
         dailySum.innerHTML = "<i class='fa fa-refresh' aria-hidden='true'></i>";
         e.target.category.value = "";
         e.target.amount.value = "";
