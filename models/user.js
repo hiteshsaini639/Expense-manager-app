@@ -27,27 +27,14 @@ class User {
       .collection("users")
       .findOne({ _id: new mongodb.ObjectId(userId) });
   }
-}
 
-// const User = sequelize.define("users", {
-//   id: {
-//     type: Sequelize.INTEGER,
-//     allowNull: false,
-//     primaryKey: true,
-//     autoIncrement: true,
-//   },
-//   name: {
-//     type: Sequelize.STRING,
-//     allowNull: false,
-//   },
-//   email: {
-//     type: Sequelize.STRING,
-//     allowNull: false,
-//   },
-//   password: {
-//     type: Sequelize.STRING,
-//     allowNull: false,
-//   },
-// });
+  getExpenses() {
+    const db = getDb();
+    return db
+      .collection("expenses")
+      .find({ userId: new mongodb.ObjectId(this._id) })
+      .toArray();
+  }
+}
 
 module.exports = User;

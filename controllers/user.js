@@ -1,7 +1,7 @@
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 
-// const Order = require("../models/order");
+const Order = require("../models/order");
 const User = require("../models/user");
 const saltRounds = 10;
 
@@ -86,29 +86,24 @@ exports.login = (req, res, next) => {
 };
 
 exports.isUserPremium = (req, res, next) => {
-  // Order.findOne({ where: { status: "paid", userId: req.user.id } })
-  //   .then((order) => {
-  //     if (order) {
-  //       return res.status(200).send({
-  //         isPremium: true,
-  //         userName: req.user.name,
-  //         userEmail: req.user.email,
-  //       });
-  //     } else {
-  //       return res.status(200).send({
-  //         isPremium: false,
-  //         userName: req.user.name,
-  //         userEmail: req.user.email,
-  //       });
-  //     }
-  //   })
-  //   .catch((err) => {
-  //     console.log(err);
-  //     res.status(500).send(err);
-  //   });
-  return res.status(200).send({
-    isPremium: false,
-    userName: req.user.name,
-    userEmail: req.user.email,
-  });
+  Order.findOne({ status: "paid", userId: req.user._id })
+    .then((order) => {
+      if (order) {
+        return res.status(200).send({
+          isPremium: true,
+          userName: req.user.name,
+          userEmail: req.user.email,
+        });
+      } else {
+        return res.status(200).send({
+          isPremium: false,
+          userName: req.user.name,
+          userEmail: req.user.email,
+        });
+      }
+    })
+    .catch((err) => {
+      console.log(err);
+      res.status(500).send(err);
+    });
 };

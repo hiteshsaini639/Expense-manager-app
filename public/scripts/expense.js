@@ -262,13 +262,14 @@ function loadYearlyExpenseData(yearNumber) {
 function showYearlyExpense(monthData) {
   const textNode = `<div class="expense-data-bar">
   <div class="bar">
-  <div class="total-by">${months[monthData.month]}</div>
+  <div class="total-by">${months[+monthData._id]}</div>
   <div class="monthly-total">${monthData.monthlySum} &#x20B9;</div>
   </div>
   </div>`;
   yearlyExpenseContainer.innerHTML += textNode;
 }
 
+//delete expense
 dailyExpenseContainer.addEventListener("click", (e) => {
   if (e.target.classList.contains("delete-btn")) {
     const token = localStorage.getItem("sessionToken");

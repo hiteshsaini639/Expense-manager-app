@@ -14,16 +14,22 @@ exports.postOrder = (req, res, next) => {
     currency: "INR",
     receipt: "order_rcptid_11",
   };
+  let orderId;
   instance.orders
     .create(options)
-    // .then((order) => {
-    // return req.user.createOrder({
-    //   id: order.id,
-    //   amount: order.amount,
-    // });
-    // })
     .then((order) => {
-      res.status(201).send({ orderId: order.id });
+      const newOrder = new Order(
+        order.id,
+        order.amount,
+        "PENDING",
+        "NULL",
+        req.user._id
+      );
+      orderId = order.id;
+      return newOrder.save();
+    })
+    .then(() => {
+      res.status(201).send({ orderId: orderId });
     })
     .catch((err) => {
       console.log(err);
@@ -36,10 +42,17 @@ exports.verifyOrder = (req, res, next) => {
   const paymentId = req.body.response.razorpay_payment_id;
   const razorpaySignature = req.body.response.razorpay_signature;
   let orderPlaced;
-  Order.findByPk(orderId)
+  Order.findByOrderId(orderId)
     .then((order) => {
-      orderPlaced = order;
-      const body = order.id + "|" + paymentId;
+      orderPlaced = new Order(
+        order.orderId,
+        order.amount,
+        order.status,
+        order.paymentId,
+        order.userId,
+        order._id
+      );
+      const body = order.orderId + "|" + paymentId;
       return crypto
         .createHmac("sha256", process.env.RZP_KEY_SECRET)
         .update(body.toString())
@@ -47,11 +60,9 @@ exports.verifyOrder = (req, res, next) => {
     })
     .then((expectedSignature) => {
       if (expectedSignature === razorpaySignature) {
-        orderPlaced.update({
-          paymentId,
-          status: "paid",
+        orderPlaced.update(paymentId, "paid").then(() => {
+          res.status(200).send({ signatureIsValid: true });
         });
-        res.status(200).send({ signatureIsValid: true });
       } else {
         res.status(200).send({ signatureIsValid: false });
       }

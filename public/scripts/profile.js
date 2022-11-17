@@ -117,7 +117,7 @@ function leaderbordHandler() {
         flexContainer.style.transform = "translateX(-1650px)";
         display(true, false);
         response.data.userWiseExpense.forEach((userExpense) => {
-          if (userExpense.id === response.data.userId) {
+          if (userExpense._id === response.data.userId) {
             showLeaderboard(userExpense, "background-color:#FF731D");
           } else {
             showLeaderboard(userExpense, "");
@@ -136,7 +136,7 @@ function leaderbordHandler() {
 function showLeaderboard(leaderboardData, highlight) {
   const textNode = `<div class="expense-data-bar" style="${highlight}">
   <div class="bar">
-    <div class="name">${leaderboardData.name}</div>
+    <div class="name">${leaderboardData.name[0]}</div>
     <div class="total">${
       leaderboardData.userTotalExpense == null
         ? 0
@@ -232,7 +232,7 @@ function showHistory(historyData) {
   const textNode = `<div class="expense-data-bar">
   <div class="bar">
     <div class="downloaded-time">${downloadedOn}</div>
-    <div class="link"><a href="${historyData.fileUrl}" download><button><i class="fa fa-download fa-lg" aria-hidden="true"></i
+    <div class="link"><a href="${historyData.fileURL}" download><button><i class="fa fa-download fa-lg" aria-hidden="true"></i
       ></button></a></div>
   </div>
   </div>`;
@@ -299,7 +299,7 @@ function createOrderId() {
 function proceedToPay(e) {
   e.preventDefault();
   const options = {
-    key: "rzp_test_NfEzOE4dgBCx9v", // Enter the Key ID generated from the Dashboard
+    key: "rzp_test_GqUhKPM6al1I7M", // Enter the Key ID generated from the Dashboard
     amount: "4900", // Amount is in currency subunits. Default currency is INR. Hence, 50000 refers to 50000 paise
     currency: "INR",
     name: "Expense Manager Pro",

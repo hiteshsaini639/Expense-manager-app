@@ -1,17 +1,26 @@
-// const Sequelize = require("sequelize");
-// const sequelize = require("../util/database");
+const getDb = require("../util/database").getDb;
+const mongodb = require("mongodb");
 
-// const ExpenseFile = sequelize.define("expensefiles",{
-//     id:{
-//         type: Sequelize.INTEGER,
-//       allowNull: false,
-//       primaryKey: true,
-//       autoIncrement: true,
-//     },
-//     fileUrl:{
-//         type:Sequelize.STRING,
-//         allowNull:false
-//     }
-// })
+class ExpenseFile {
+  constructor(userId, fileURL) {
+    this.userId = userId;
+    this.fileURL = fileURL;
+    this.createdAt = new Date();
+  }
 
-// module.exports = ExpenseFile;
+  save() {
+    const db = getDb();
+    return db.collection("expensefiles").insertOne(this);
+  }
+
+  static getExpensefiles(id) {
+    const db = getDb();
+    return db
+      .collection("expensefiles")
+      .find({ userId: id })
+      .sort({ created: 1 })
+      .toArray();
+  }
+}
+
+module.exports = ExpenseFile;

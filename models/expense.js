@@ -27,13 +27,49 @@ class Expense {
         },
         {
           $group: {
-            _id: "$userId",
+            _id: null,
             count: { $sum: 1 },
             total: { $sum: { $toInt: "$amount" } },
           },
         },
       ])
       .next();
+  }
+
+  static getSumInMonth(userId, month, year) {
+    const db = getDb();
+    return db
+      .collection("expenses")
+      .aggregate([
+        {
+          $match: { userId: userId, month: month, year: year },
+        },
+        {
+          $group: {
+            _id: null,
+            sum: { $sum: { $toInt: "$amount" } },
+          },
+        },
+      ])
+      .next();
+  }
+
+  static getExpensesInYear(userId, year) {
+    const db = getDb();
+    return db
+      .collection("expenses")
+      .aggregate([
+        {
+          $match: { userId: userId, year: year },
+        },
+        {
+          $group: {
+            _id: "$month",
+            monthlySum: { $sum: { $toInt: "$amount" } },
+          },
+        },
+      ])
+      .toArray();
   }
 
   static getExpenses(userId, date, month, year, offset, limit) {
@@ -44,6 +80,43 @@ class Expense {
       .skip(offset)
       .limit(limit)
       .toArray();
+  }
+
+  static userWithTotalExpense() {
+    const db = getDb();
+    return db
+      .collection("expenses")
+      .aggregate([
+        {
+          $group: {
+            _id: "$userId",
+            userTotalExpense: { $sum: { $toInt: "$amount" } },
+          },
+        },
+        {
+          $lookup: {
+            from: "users",
+            localField: "_id",
+            foreignField: "_id",
+            as: "user",
+          },
+        },
+        {
+          $project: {
+            _id: 1,
+            name: "$user.name",
+            userTotalExpense: 1,
+          },
+        },
+      ])
+      .toArray();
+  }
+
+  static removeOne(id) {
+    const db = getDb();
+    return db
+      .collection("expenses")
+      .deleteOne({ _id: new mongodb.ObjectId(id) });
   }
 }
 

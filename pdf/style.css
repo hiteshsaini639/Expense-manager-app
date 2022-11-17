@@ -1,0 +1,86 @@
+@import url("https://fonts.googleapis.com/css2?family=Montserrat&display=swap");
+
+body {
+  font-family: "Montserrat", sans-serif;
+  max-width: 60%;
+  margin: auto;
+  color: #333;
+  font-weight: bold;
+}
+.header {
+  display: flex;
+  align-items: center;
+}
+.face {
+  width: 150px;
+  height: 150px;
+  object-fit: cover;
+  border-radius: 50%;
+  margin-top: 20px;
+}
+.title {
+  flex: 1;
+  margin-left: 20px;
+}
+.name {
+  color: grey;
+}
+.coral {
+  color: coral;
+}
+
+.qr-code {
+  width: 150px;
+  height: 150px;
+  object-fit: cover;
+  margin-top: 10px;
+}
+
+table {
+  margin-top: 20px;
+  width: 100%;
+  padding: 0;
+  border-collapse: collapse;
+  table-layout: fixed;
+}
+
+table caption {
+  margin: 1rem 0;
+  color: slategray;
+  font-size: 1.5rem;
+  font-weight: 600;
+  letter-spacing: 0.055rem;
+  text-align: left;
+}
+
+table thead th {
+  background-color: #eee;
+  font-size: 1rem;
+}
+
+/* table tbody tr {
+  border: 1px solid var(--insideBorderColor);
+  background-color: var(--bgColorDarker);
+} */
+
+table th {
+  letter-spacing: 0.075rem;
+  font-weight: 900;
+  padding: 0.75rem 1rem;
+  text-align: left;
+}
+
+table td {
+  padding: 0.75rem 1rem;
+  font-weight: normal;
+  text-align: left;
+}
+
+table th:last-child,
+table td:last-child {
+  text-align: right;
+}
+
+table th:first-child {
+  text-align: left;
+}

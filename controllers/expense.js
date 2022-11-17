@@ -131,14 +131,12 @@ exports.getExpensesByMonth = (req, res, next) => {
     month: "long",
     year: "numeric",
   });
-  Expense.sum("amount", {
-    where: {
-      userId: req.user.id,
-      month: firstDayOfMonth.getMonth(),
-      year: firstDayOfMonth.getFullYear(),
-    },
-  })
-    .then((sum) => {
+  Expense.getSumInMonth(
+    req.user._id,
+    firstDayOfMonth.getMonth(),
+    firstDayOfMonth.getFullYear()
+  )
+    .then(({ sum }) => {
       res.status(200).send({ monthlySum: sum, month: monthToSend });
     })
     .catch((err) => {
@@ -155,17 +153,7 @@ exports.getExpensesByYear = (req, res, next) => {
       .send({ type: "error", message: "Bad Query Parameters!" });
   }
   const year = new Date().getFullYear() + yearNumber;
-  req.user
-    .getExpenses({
-      where: {
-        year: year,
-      },
-      attributes: [
-        "month",
-        [Sequelize.fn("SUM", Sequelize.col("amount")), "monthlySum"],
-      ],
-      group: ["month"],
-    })
+  Expense.getExpensesInYear(req.user._id, year)
     .then((monthlyData) => {
       res.status(200).send({ monthWiseSum: monthlyData, year: year });
     })
@@ -176,18 +164,9 @@ exports.getExpensesByYear = (req, res, next) => {
 };
 
 exports.getLeaderboard = (req, res, next) => {
-  User.findAll({
-    include: [{ model: Expense, attributes: [] }],
-    attributes: [
-      "id",
-      "name",
-      [Sequelize.fn("SUM", Sequelize.col("amount")), "userTotalExpense"],
-    ],
-    group: ["userId"],
-    order: [["userTotalExpense", "ASC"]],
-  })
+  Expense.userWithTotalExpense({})
     .then((users) => {
-      res.status(200).send({ userWiseExpense: users, userId: req.user.id });
+      res.status(200).send({ userWiseExpense: users, userId: req.user._id });
     })
     .catch((err) => {
       console.log(err);
@@ -196,20 +175,23 @@ exports.getLeaderboard = (req, res, next) => {
 };
 
 exports.deleteExpense = (req, res, next) => {
-  const expenseId = +req.params.expenseId;
+  const expenseId = req.params.expenseId;
   if (isNotValid(expenseId)) {
     return res
       .status(400)
       .send({ type: "error", message: "Bad Query Parameters!" });
   }
-  Expense.findByPk(expenseId)
-    .then((expense) => {
-      return expense.destroy();
-    })
-    .then(() => {
-      res
-        .status(200)
-        .send({ type: "success", message: "Expense Deleted Successfully." });
+  Expense.removeOne(expenseId)
+    .then((result) => {
+      if (result.deletedCount === 1) {
+        return res
+          .status(200)
+          .send({ type: "success", message: "Expense Deleted Successfully." });
+      } else {
+        return res
+          .status(500)
+          .send({ type: "error", message: "deletion failed" });
+      }
     })
     .catch((err) => {
       console.log(err);
